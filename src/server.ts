@@ -1,30 +1,42 @@
 import Fastify, { FastifyInstance } from 'fastify'
+import { serializerCompiler, validatorCompiler, ZodTypeProvider } from 'fastify-type-provider-zod'
+
+// Fastify Plugins
 import { fastifyCors } from '@fastify/cors'
-import { serializerCompiler, validatorCompiler } from 'fastify-type-provider-zod'
+import { fastifyJwt } from '@fastify/jwt'
+import fastifyMultipart from '@fastify/multipart'
+
+// Routes
 import adminRoutes from './routes/admin'
+import productRoutes from './routes/product'
+import { authRouter } from './routes/auth'
 
 class CheckoutApp {
     public server: FastifyInstance
 
     constructor () {
-        this.server = Fastify()
+        this.server = Fastify().withTypeProvider<ZodTypeProvider>()
+        this.server.register(fastifyJwt, {secret: process.env.JWT_PASS as string})
 
         this.middleware()
-        this.setZod()
+        this.setZodCompiler()
         this.setRoutes()
     }
 
     private middleware() {
         this.server.register(fastifyCors, { origin: '*' })
+        // this.server.register(fastifyMultipart, { attachFieldsToBody: "keyValues", limits: { fileSize: 10*1024*1024, files: 1 } })
     }
 
-    private setZod(){
+    private setZodCompiler(){
         this.server.setValidatorCompiler(validatorCompiler)
         this.server.setSerializerCompiler(serializerCompiler)
     }
 
     private setRoutes(){
         this.server.register(adminRoutes, { prefix: '/admin' })
+        this.server.register(authRouter, { prefix: '/auth' })
+        this.server.register(productRoutes, { prefix: '/product' })
     }
 
 

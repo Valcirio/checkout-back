@@ -7,7 +7,7 @@ import {
 } from "fastify";
 import { ZodTypeProvider } from "fastify-type-provider-zod";
 
-export type FastifyTypedIsntance = FastifyInstance<
+export type FastifyZodInstance = FastifyInstance<
     RawServerDefault,
     RawRequestDefaultExpression,
     RawReplyDefaultExpression,

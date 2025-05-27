@@ -1,15 +1,58 @@
-import { FastifyTypedIsntance } from "@/types/zod";
+// Controllers
+import { CreateAdmin, FindAdminById } from "@/controllers/admin";
+
+// Utils
+import { GenericMessages } from "@/utils/genericErrorMsg";
+
+// Validators
 import { ZRegisterAdmin } from "@/validators/admin";
+import { ZParams } from "@/validators/params";
+import { hasZodFastifySchemaValidationErrors } from "fastify-type-provider-zod";
 
-export default async function adminRoutes(app: FastifyTypedIsntance) {
+// Types
+import { STATUS_CODE } from "@/types/httpStatus";
+import { FastifyZodInstance } from "@/types/zod";
 
+export default async function adminRoutes(app: FastifyZodInstance) {
+    app.get('', {
+        onRequest: async (req, reply) => {
+            try {
+                await req.jwtVerify()
+            } catch(err) {
+                return reply.status(STATUS_CODE.Unauthorized).send({message: 'Usuário não autorizado.'})
+            }
+        },
+        errorHandler(error, req, reply) {
+            return reply.status(error.statusCode ? error.statusCode : 500)
+            .send({message: GenericMessages(error.statusCode as STATUS_CODE) })
+        },
+    }, FindAdminById)
+    
     app.post('',
     {
         schema: {
             body: ZRegisterAdmin
-        }
-    },
-    async (req, reply) =>{
-        return reply.status(200).send({message: ''})
-    })
+        },
+        errorHandler(error, req, reply) {
+            if (hasZodFastifySchemaValidationErrors(error)) {
+                return reply.status(STATUS_CODE.BadRequest).send({
+                    message: 'Erro de validação',
+                    details: {
+                        issues: error.validation.map((el)=>{
+                            return {
+                                issue: el.params.issue.path,
+                                code: el.params.issue.code,
+                                message: el.params.issue.message
+                            }
+                        }),
+                        method: req.method,
+                        url: req.url,
+                    },
+                })
+            }
+
+            return reply.status(error.statusCode ? error.statusCode : 500)
+            .send({message: GenericMessages(error.statusCode as STATUS_CODE) })
+        },
+    }, CreateAdmin )
 }
