@@ -20,6 +20,7 @@ export async function authRouter(app: FastifyZodInstance){
             body: ZLoginAdmin
         },
         errorHandler(error, req, reply) {
+
             if (hasZodFastifySchemaValidationErrors(error)) {
                 return reply.status(STATUS_CODE.BadRequest).send({
                     message: 'Erro de validação.',
@@ -42,6 +43,7 @@ export async function authRouter(app: FastifyZodInstance){
         }
     },
     async (req, reply)=>{
+        console.log(req.body)
         const result = await prisma.admin.findUnique({
             where:{
                 email: req.body.email
@@ -49,12 +51,10 @@ export async function authRouter(app: FastifyZodInstance){
         })
 
         if(!result){
-            // throw new Error('Não existe um usuário com esse e-mail.', { cause: STATUS_CODE.BadRequest })
             return reply.status(STATUS_CODE.BadRequest).send({message: 'E-mail e(ou) senha do usuário estão incorretas.'})
         }
         
         if(await bcrypt.compare(req.body.password, result.password) === false){
-            // throw new Error('A senha está incorreta.', { cause: STATUS_CODE.BadRequest })
             return reply.status(STATUS_CODE.BadRequest).send({message: 'E-mail e(ou) senha do usuário estão incorretas.'})
         }
 
@@ -67,7 +67,6 @@ export async function authRouter(app: FastifyZodInstance){
                 expiresIn: Date.now() + (TIME_STAMP.OneDay*3) 
             }
         )
-
         return reply.status(STATUS_CODE.OK).send({ message:'usuário logado com sucesso!', access_token: token })
     })
 }

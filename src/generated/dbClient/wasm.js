@@ -145,16 +145,17 @@ exports.Prisma.ProductScalarFieldEnum = {
 exports.Prisma.ClientScalarFieldEnum = {
   id: 'id',
   name: 'name',
+  email: 'email',
   cpf: 'cpf',
-  token: 'token',
-  last4: 'last4',
-  brand: 'brand',
-  expDate: 'expDate',
+  stripeMethodId: 'stripeMethodId',
+  method: 'method',
+  status: 'status',
   createdAt: 'createdAt'
 };
 
 exports.Prisma.OrderScalarFieldEnum = {
   id: 'id',
+  stripeIntentId: 'stripeIntentId',
   clientId: 'clientId',
   productId: 'productId',
   createdAt: 'createdAt'

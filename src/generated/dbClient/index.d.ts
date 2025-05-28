@@ -1152,6 +1152,37 @@ export namespace Prisma {
 
 
   /**
+   * Count Type AdminCountOutputType
+   */
+
+  export type AdminCountOutputType = {
+    Product: number
+  }
+
+  export type AdminCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    Product?: boolean | AdminCountOutputTypeCountProductArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * AdminCountOutputType without action
+   */
+  export type AdminCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AdminCountOutputType
+     */
+    select?: AdminCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * AdminCountOutputType without action
+   */
+  export type AdminCountOutputTypeCountProductArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ProductWhereInput
+  }
+
+
+  /**
    * Count Type ProductCountOutputType
    */
 
@@ -1178,37 +1209,6 @@ export namespace Prisma {
    * ProductCountOutputType without action
    */
   export type ProductCountOutputTypeCountOrderArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: OrderWhereInput
-  }
-
-
-  /**
-   * Count Type ClientCountOutputType
-   */
-
-  export type ClientCountOutputType = {
-    Order: number
-  }
-
-  export type ClientCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    Order?: boolean | ClientCountOutputTypeCountOrderArgs
-  }
-
-  // Custom InputTypes
-  /**
-   * ClientCountOutputType without action
-   */
-  export type ClientCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the ClientCountOutputType
-     */
-    select?: ClientCountOutputTypeSelect<ExtArgs> | null
-  }
-
-  /**
-   * ClientCountOutputType without action
-   */
-  export type ClientCountOutputTypeCountOrderArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: OrderWhereInput
   }
 
@@ -1398,6 +1398,7 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     Product?: boolean | Admin$ProductArgs<ExtArgs>
+    _count?: boolean | AdminCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["admin"]>
 
   export type AdminSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -1433,6 +1434,7 @@ export namespace Prisma {
   export type AdminOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "cnpj" | "password" | "createdAt" | "updatedAt", ExtArgs["result"]["admin"]>
   export type AdminInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     Product?: boolean | Admin$ProductArgs<ExtArgs>
+    _count?: boolean | AdminCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type AdminIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
   export type AdminIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -1440,7 +1442,7 @@ export namespace Prisma {
   export type $AdminPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Admin"
     objects: {
-      Product: Prisma.$ProductPayload<ExtArgs> | null
+      Product: Prisma.$ProductPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -1844,7 +1846,7 @@ export namespace Prisma {
    */
   export interface Prisma__AdminClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    Product<T extends Admin$ProductArgs<ExtArgs> = {}>(args?: Subset<T, Admin$ProductArgs<ExtArgs>>): Prisma__ProductClient<$Result.GetResult<Prisma.$ProductPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    Product<T extends Admin$ProductArgs<ExtArgs> = {}>(args?: Subset<T, Admin$ProductArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProductPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2285,6 +2287,11 @@ export namespace Prisma {
      */
     include?: ProductInclude<ExtArgs> | null
     where?: ProductWhereInput
+    orderBy?: ProductOrderByWithRelationInput | ProductOrderByWithRelationInput[]
+    cursor?: ProductWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ProductScalarFieldEnum | ProductScalarFieldEnum[]
   }
 
   /**
@@ -3497,33 +3504,33 @@ export namespace Prisma {
   export type ClientMinAggregateOutputType = {
     id: string | null
     name: string | null
+    email: string | null
     cpf: string | null
-    token: string | null
-    last4: string | null
-    brand: string | null
-    expDate: Date | null
+    stripeMethodId: string | null
+    method: string | null
+    status: string | null
     createdAt: Date | null
   }
 
   export type ClientMaxAggregateOutputType = {
     id: string | null
     name: string | null
+    email: string | null
     cpf: string | null
-    token: string | null
-    last4: string | null
-    brand: string | null
-    expDate: Date | null
+    stripeMethodId: string | null
+    method: string | null
+    status: string | null
     createdAt: Date | null
   }
 
   export type ClientCountAggregateOutputType = {
     id: number
     name: number
+    email: number
     cpf: number
-    token: number
-    last4: number
-    brand: number
-    expDate: number
+    stripeMethodId: number
+    method: number
+    status: number
     createdAt: number
     _all: number
   }
@@ -3532,33 +3539,33 @@ export namespace Prisma {
   export type ClientMinAggregateInputType = {
     id?: true
     name?: true
+    email?: true
     cpf?: true
-    token?: true
-    last4?: true
-    brand?: true
-    expDate?: true
+    stripeMethodId?: true
+    method?: true
+    status?: true
     createdAt?: true
   }
 
   export type ClientMaxAggregateInputType = {
     id?: true
     name?: true
+    email?: true
     cpf?: true
-    token?: true
-    last4?: true
-    brand?: true
-    expDate?: true
+    stripeMethodId?: true
+    method?: true
+    status?: true
     createdAt?: true
   }
 
   export type ClientCountAggregateInputType = {
     id?: true
     name?: true
+    email?: true
     cpf?: true
-    token?: true
-    last4?: true
-    brand?: true
-    expDate?: true
+    stripeMethodId?: true
+    method?: true
+    status?: true
     createdAt?: true
     _all?: true
   }
@@ -3638,11 +3645,11 @@ export namespace Prisma {
   export type ClientGroupByOutputType = {
     id: string
     name: string
+    email: string
     cpf: string
-    token: string
-    last4: string
-    brand: string
-    expDate: Date
+    stripeMethodId: string
+    method: string
+    status: string
     createdAt: Date
     _count: ClientCountAggregateOutputType | null
     _min: ClientMinAggregateOutputType | null
@@ -3666,53 +3673,51 @@ export namespace Prisma {
   export type ClientSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     name?: boolean
+    email?: boolean
     cpf?: boolean
-    token?: boolean
-    last4?: boolean
-    brand?: boolean
-    expDate?: boolean
+    stripeMethodId?: boolean
+    method?: boolean
+    status?: boolean
     createdAt?: boolean
     Order?: boolean | Client$OrderArgs<ExtArgs>
-    _count?: boolean | ClientCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["client"]>
 
   export type ClientSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     name?: boolean
+    email?: boolean
     cpf?: boolean
-    token?: boolean
-    last4?: boolean
-    brand?: boolean
-    expDate?: boolean
+    stripeMethodId?: boolean
+    method?: boolean
+    status?: boolean
     createdAt?: boolean
   }, ExtArgs["result"]["client"]>
 
   export type ClientSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     name?: boolean
+    email?: boolean
     cpf?: boolean
-    token?: boolean
-    last4?: boolean
-    brand?: boolean
-    expDate?: boolean
+    stripeMethodId?: boolean
+    method?: boolean
+    status?: boolean
     createdAt?: boolean
   }, ExtArgs["result"]["client"]>
 
   export type ClientSelectScalar = {
     id?: boolean
     name?: boolean
+    email?: boolean
     cpf?: boolean
-    token?: boolean
-    last4?: boolean
-    brand?: boolean
-    expDate?: boolean
+    stripeMethodId?: boolean
+    method?: boolean
+    status?: boolean
     createdAt?: boolean
   }
 
-  export type ClientOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "cpf" | "token" | "last4" | "brand" | "expDate" | "createdAt", ExtArgs["result"]["client"]>
+  export type ClientOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "cpf" | "stripeMethodId" | "method" | "status" | "createdAt", ExtArgs["result"]["client"]>
   export type ClientInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     Order?: boolean | Client$OrderArgs<ExtArgs>
-    _count?: boolean | ClientCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type ClientIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
   export type ClientIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -3720,16 +3725,16 @@ export namespace Prisma {
   export type $ClientPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Client"
     objects: {
-      Order: Prisma.$OrderPayload<ExtArgs>[]
+      Order: Prisma.$OrderPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
       name: string
+      email: string
       cpf: string
-      token: string
-      last4: string
-      brand: string
-      expDate: Date
+      stripeMethodId: string
+      method: string
+      status: string
       createdAt: Date
     }, ExtArgs["result"]["client"]>
     composites: {}
@@ -4125,7 +4130,7 @@ export namespace Prisma {
    */
   export interface Prisma__ClientClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    Order<T extends Client$OrderArgs<ExtArgs> = {}>(args?: Subset<T, Client$OrderArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OrderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    Order<T extends Client$OrderArgs<ExtArgs> = {}>(args?: Subset<T, Client$OrderArgs<ExtArgs>>): Prisma__OrderClient<$Result.GetResult<Prisma.$OrderPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -4157,11 +4162,11 @@ export namespace Prisma {
   interface ClientFieldRefs {
     readonly id: FieldRef<"Client", 'String'>
     readonly name: FieldRef<"Client", 'String'>
+    readonly email: FieldRef<"Client", 'String'>
     readonly cpf: FieldRef<"Client", 'String'>
-    readonly token: FieldRef<"Client", 'String'>
-    readonly last4: FieldRef<"Client", 'String'>
-    readonly brand: FieldRef<"Client", 'String'>
-    readonly expDate: FieldRef<"Client", 'DateTime'>
+    readonly stripeMethodId: FieldRef<"Client", 'String'>
+    readonly method: FieldRef<"Client", 'String'>
+    readonly status: FieldRef<"Client", 'String'>
     readonly createdAt: FieldRef<"Client", 'DateTime'>
   }
     
@@ -4567,11 +4572,6 @@ export namespace Prisma {
      */
     include?: OrderInclude<ExtArgs> | null
     where?: OrderWhereInput
-    orderBy?: OrderOrderByWithRelationInput | OrderOrderByWithRelationInput[]
-    cursor?: OrderWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: OrderScalarFieldEnum | OrderScalarFieldEnum[]
   }
 
   /**
@@ -4605,6 +4605,7 @@ export namespace Prisma {
 
   export type OrderMinAggregateOutputType = {
     id: string | null
+    stripeIntentId: string | null
     clientId: string | null
     productId: string | null
     createdAt: Date | null
@@ -4612,6 +4613,7 @@ export namespace Prisma {
 
   export type OrderMaxAggregateOutputType = {
     id: string | null
+    stripeIntentId: string | null
     clientId: string | null
     productId: string | null
     createdAt: Date | null
@@ -4619,6 +4621,7 @@ export namespace Prisma {
 
   export type OrderCountAggregateOutputType = {
     id: number
+    stripeIntentId: number
     clientId: number
     productId: number
     createdAt: number
@@ -4628,6 +4631,7 @@ export namespace Prisma {
 
   export type OrderMinAggregateInputType = {
     id?: true
+    stripeIntentId?: true
     clientId?: true
     productId?: true
     createdAt?: true
@@ -4635,6 +4639,7 @@ export namespace Prisma {
 
   export type OrderMaxAggregateInputType = {
     id?: true
+    stripeIntentId?: true
     clientId?: true
     productId?: true
     createdAt?: true
@@ -4642,6 +4647,7 @@ export namespace Prisma {
 
   export type OrderCountAggregateInputType = {
     id?: true
+    stripeIntentId?: true
     clientId?: true
     productId?: true
     createdAt?: true
@@ -4722,6 +4728,7 @@ export namespace Prisma {
 
   export type OrderGroupByOutputType = {
     id: string
+    stripeIntentId: string
     clientId: string
     productId: string
     createdAt: Date
@@ -4746,6 +4753,7 @@ export namespace Prisma {
 
   export type OrderSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    stripeIntentId?: boolean
     clientId?: boolean
     productId?: boolean
     createdAt?: boolean
@@ -4755,6 +4763,7 @@ export namespace Prisma {
 
   export type OrderSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    stripeIntentId?: boolean
     clientId?: boolean
     productId?: boolean
     createdAt?: boolean
@@ -4764,6 +4773,7 @@ export namespace Prisma {
 
   export type OrderSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    stripeIntentId?: boolean
     clientId?: boolean
     productId?: boolean
     createdAt?: boolean
@@ -4773,12 +4783,13 @@ export namespace Prisma {
 
   export type OrderSelectScalar = {
     id?: boolean
+    stripeIntentId?: boolean
     clientId?: boolean
     productId?: boolean
     createdAt?: boolean
   }
 
-  export type OrderOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "clientId" | "productId" | "createdAt", ExtArgs["result"]["order"]>
+  export type OrderOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "stripeIntentId" | "clientId" | "productId" | "createdAt", ExtArgs["result"]["order"]>
   export type OrderInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     client?: boolean | ClientDefaultArgs<ExtArgs>
     product?: boolean | ProductDefaultArgs<ExtArgs>
@@ -4800,6 +4811,7 @@ export namespace Prisma {
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
+      stripeIntentId: string
       clientId: string
       productId: string
       createdAt: Date
@@ -5229,6 +5241,7 @@ export namespace Prisma {
    */
   interface OrderFieldRefs {
     readonly id: FieldRef<"Order", 'String'>
+    readonly stripeIntentId: FieldRef<"Order", 'String'>
     readonly clientId: FieldRef<"Order", 'String'>
     readonly productId: FieldRef<"Order", 'String'>
     readonly createdAt: FieldRef<"Order", 'DateTime'>
@@ -5691,11 +5704,11 @@ export namespace Prisma {
   export const ClientScalarFieldEnum: {
     id: 'id',
     name: 'name',
+    email: 'email',
     cpf: 'cpf',
-    token: 'token',
-    last4: 'last4',
-    brand: 'brand',
-    expDate: 'expDate',
+    stripeMethodId: 'stripeMethodId',
+    method: 'method',
+    status: 'status',
     createdAt: 'createdAt'
   };
 
@@ -5704,6 +5717,7 @@ export namespace Prisma {
 
   export const OrderScalarFieldEnum: {
     id: 'id',
+    stripeIntentId: 'stripeIntentId',
     clientId: 'clientId',
     productId: 'productId',
     createdAt: 'createdAt'
@@ -5817,7 +5831,7 @@ export namespace Prisma {
     password?: StringFilter<"Admin"> | string
     createdAt?: DateTimeFilter<"Admin"> | Date | string
     updatedAt?: DateTimeFilter<"Admin"> | Date | string
-    Product?: XOR<ProductNullableScalarRelationFilter, ProductWhereInput> | null
+    Product?: ProductListRelationFilter
   }
 
   export type AdminOrderByWithRelationInput = {
@@ -5828,7 +5842,7 @@ export namespace Prisma {
     password?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    Product?: ProductOrderByWithRelationInput
+    Product?: ProductOrderByRelationAggregateInput
   }
 
   export type AdminWhereUniqueInput = Prisma.AtLeast<{
@@ -5842,7 +5856,7 @@ export namespace Prisma {
     password?: StringFilter<"Admin"> | string
     createdAt?: DateTimeFilter<"Admin"> | Date | string
     updatedAt?: DateTimeFilter<"Admin"> | Date | string
-    Product?: XOR<ProductNullableScalarRelationFilter, ProductWhereInput> | null
+    Product?: ProductListRelationFilter
   }, "id" | "email" | "cnpj">
 
   export type AdminOrderByWithAggregationInput = {
@@ -5904,7 +5918,6 @@ export namespace Prisma {
 
   export type ProductWhereUniqueInput = Prisma.AtLeast<{
     id?: string
-    adminId?: string
     AND?: ProductWhereInput | ProductWhereInput[]
     OR?: ProductWhereInput[]
     NOT?: ProductWhereInput | ProductWhereInput[]
@@ -5913,11 +5926,12 @@ export namespace Prisma {
     price?: DecimalFilter<"Product"> | Decimal | DecimalJsLike | number | string
     picture?: StringFilter<"Product"> | string
     quantity?: IntFilter<"Product"> | number
+    adminId?: StringFilter<"Product"> | string
     createdAt?: DateTimeFilter<"Product"> | Date | string
     updatedAt?: DateTimeFilter<"Product"> | Date | string
     Order?: OrderListRelationFilter
     admin?: XOR<AdminScalarRelationFilter, AdminWhereInput>
-  }, "id" | "adminId">
+  }, "id">
 
   export type ProductOrderByWithAggregationInput = {
     id?: SortOrder
@@ -5957,50 +5971,50 @@ export namespace Prisma {
     NOT?: ClientWhereInput | ClientWhereInput[]
     id?: StringFilter<"Client"> | string
     name?: StringFilter<"Client"> | string
+    email?: StringFilter<"Client"> | string
     cpf?: StringFilter<"Client"> | string
-    token?: StringFilter<"Client"> | string
-    last4?: StringFilter<"Client"> | string
-    brand?: StringFilter<"Client"> | string
-    expDate?: DateTimeFilter<"Client"> | Date | string
+    stripeMethodId?: StringFilter<"Client"> | string
+    method?: StringFilter<"Client"> | string
+    status?: StringFilter<"Client"> | string
     createdAt?: DateTimeFilter<"Client"> | Date | string
-    Order?: OrderListRelationFilter
+    Order?: XOR<OrderNullableScalarRelationFilter, OrderWhereInput> | null
   }
 
   export type ClientOrderByWithRelationInput = {
     id?: SortOrder
     name?: SortOrder
+    email?: SortOrder
     cpf?: SortOrder
-    token?: SortOrder
-    last4?: SortOrder
-    brand?: SortOrder
-    expDate?: SortOrder
+    stripeMethodId?: SortOrder
+    method?: SortOrder
+    status?: SortOrder
     createdAt?: SortOrder
-    Order?: OrderOrderByRelationAggregateInput
+    Order?: OrderOrderByWithRelationInput
   }
 
   export type ClientWhereUniqueInput = Prisma.AtLeast<{
     id?: string
+    stripeMethodId?: string
     AND?: ClientWhereInput | ClientWhereInput[]
     OR?: ClientWhereInput[]
     NOT?: ClientWhereInput | ClientWhereInput[]
     name?: StringFilter<"Client"> | string
+    email?: StringFilter<"Client"> | string
     cpf?: StringFilter<"Client"> | string
-    token?: StringFilter<"Client"> | string
-    last4?: StringFilter<"Client"> | string
-    brand?: StringFilter<"Client"> | string
-    expDate?: DateTimeFilter<"Client"> | Date | string
+    method?: StringFilter<"Client"> | string
+    status?: StringFilter<"Client"> | string
     createdAt?: DateTimeFilter<"Client"> | Date | string
-    Order?: OrderListRelationFilter
-  }, "id">
+    Order?: XOR<OrderNullableScalarRelationFilter, OrderWhereInput> | null
+  }, "id" | "stripeMethodId">
 
   export type ClientOrderByWithAggregationInput = {
     id?: SortOrder
     name?: SortOrder
+    email?: SortOrder
     cpf?: SortOrder
-    token?: SortOrder
-    last4?: SortOrder
-    brand?: SortOrder
-    expDate?: SortOrder
+    stripeMethodId?: SortOrder
+    method?: SortOrder
+    status?: SortOrder
     createdAt?: SortOrder
     _count?: ClientCountOrderByAggregateInput
     _max?: ClientMaxOrderByAggregateInput
@@ -6013,11 +6027,11 @@ export namespace Prisma {
     NOT?: ClientScalarWhereWithAggregatesInput | ClientScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"Client"> | string
     name?: StringWithAggregatesFilter<"Client"> | string
+    email?: StringWithAggregatesFilter<"Client"> | string
     cpf?: StringWithAggregatesFilter<"Client"> | string
-    token?: StringWithAggregatesFilter<"Client"> | string
-    last4?: StringWithAggregatesFilter<"Client"> | string
-    brand?: StringWithAggregatesFilter<"Client"> | string
-    expDate?: DateTimeWithAggregatesFilter<"Client"> | Date | string
+    stripeMethodId?: StringWithAggregatesFilter<"Client"> | string
+    method?: StringWithAggregatesFilter<"Client"> | string
+    status?: StringWithAggregatesFilter<"Client"> | string
     createdAt?: DateTimeWithAggregatesFilter<"Client"> | Date | string
   }
 
@@ -6026,6 +6040,7 @@ export namespace Prisma {
     OR?: OrderWhereInput[]
     NOT?: OrderWhereInput | OrderWhereInput[]
     id?: StringFilter<"Order"> | string
+    stripeIntentId?: StringFilter<"Order"> | string
     clientId?: StringFilter<"Order"> | string
     productId?: StringFilter<"Order"> | string
     createdAt?: DateTimeFilter<"Order"> | Date | string
@@ -6035,6 +6050,7 @@ export namespace Prisma {
 
   export type OrderOrderByWithRelationInput = {
     id?: SortOrder
+    stripeIntentId?: SortOrder
     clientId?: SortOrder
     productId?: SortOrder
     createdAt?: SortOrder
@@ -6044,18 +6060,20 @@ export namespace Prisma {
 
   export type OrderWhereUniqueInput = Prisma.AtLeast<{
     id?: string
+    stripeIntentId?: string
+    clientId?: string
     AND?: OrderWhereInput | OrderWhereInput[]
     OR?: OrderWhereInput[]
     NOT?: OrderWhereInput | OrderWhereInput[]
-    clientId?: StringFilter<"Order"> | string
     productId?: StringFilter<"Order"> | string
     createdAt?: DateTimeFilter<"Order"> | Date | string
     client?: XOR<ClientScalarRelationFilter, ClientWhereInput>
     product?: XOR<ProductScalarRelationFilter, ProductWhereInput>
-  }, "id">
+  }, "id" | "stripeIntentId" | "clientId">
 
   export type OrderOrderByWithAggregationInput = {
     id?: SortOrder
+    stripeIntentId?: SortOrder
     clientId?: SortOrder
     productId?: SortOrder
     createdAt?: SortOrder
@@ -6069,6 +6087,7 @@ export namespace Prisma {
     OR?: OrderScalarWhereWithAggregatesInput[]
     NOT?: OrderScalarWhereWithAggregatesInput | OrderScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"Order"> | string
+    stripeIntentId?: StringWithAggregatesFilter<"Order"> | string
     clientId?: StringWithAggregatesFilter<"Order"> | string
     productId?: StringWithAggregatesFilter<"Order"> | string
     createdAt?: DateTimeWithAggregatesFilter<"Order"> | Date | string
@@ -6082,7 +6101,7 @@ export namespace Prisma {
     password: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    Product?: ProductCreateNestedOneWithoutAdminInput
+    Product?: ProductCreateNestedManyWithoutAdminInput
   }
 
   export type AdminUncheckedCreateInput = {
@@ -6093,7 +6112,7 @@ export namespace Prisma {
     password: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    Product?: ProductUncheckedCreateNestedOneWithoutAdminInput
+    Product?: ProductUncheckedCreateNestedManyWithoutAdminInput
   }
 
   export type AdminUpdateInput = {
@@ -6104,7 +6123,7 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    Product?: ProductUpdateOneWithoutAdminNestedInput
+    Product?: ProductUpdateManyWithoutAdminNestedInput
   }
 
   export type AdminUncheckedUpdateInput = {
@@ -6115,7 +6134,7 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    Product?: ProductUncheckedUpdateOneWithoutAdminNestedInput
+    Product?: ProductUncheckedUpdateManyWithoutAdminNestedInput
   }
 
   export type AdminCreateManyInput = {
@@ -6238,86 +6257,87 @@ export namespace Prisma {
   export type ClientCreateInput = {
     id?: string
     name: string
+    email: string
     cpf: string
-    token: string
-    last4: string
-    brand: string
-    expDate: Date | string
+    stripeMethodId: string
+    method: string
+    status: string
     createdAt?: Date | string
-    Order?: OrderCreateNestedManyWithoutClientInput
+    Order?: OrderCreateNestedOneWithoutClientInput
   }
 
   export type ClientUncheckedCreateInput = {
     id?: string
     name: string
+    email: string
     cpf: string
-    token: string
-    last4: string
-    brand: string
-    expDate: Date | string
+    stripeMethodId: string
+    method: string
+    status: string
     createdAt?: Date | string
-    Order?: OrderUncheckedCreateNestedManyWithoutClientInput
+    Order?: OrderUncheckedCreateNestedOneWithoutClientInput
   }
 
   export type ClientUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
     cpf?: StringFieldUpdateOperationsInput | string
-    token?: StringFieldUpdateOperationsInput | string
-    last4?: StringFieldUpdateOperationsInput | string
-    brand?: StringFieldUpdateOperationsInput | string
-    expDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    stripeMethodId?: StringFieldUpdateOperationsInput | string
+    method?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    Order?: OrderUpdateManyWithoutClientNestedInput
+    Order?: OrderUpdateOneWithoutClientNestedInput
   }
 
   export type ClientUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
     cpf?: StringFieldUpdateOperationsInput | string
-    token?: StringFieldUpdateOperationsInput | string
-    last4?: StringFieldUpdateOperationsInput | string
-    brand?: StringFieldUpdateOperationsInput | string
-    expDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    stripeMethodId?: StringFieldUpdateOperationsInput | string
+    method?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    Order?: OrderUncheckedUpdateManyWithoutClientNestedInput
+    Order?: OrderUncheckedUpdateOneWithoutClientNestedInput
   }
 
   export type ClientCreateManyInput = {
     id?: string
     name: string
+    email: string
     cpf: string
-    token: string
-    last4: string
-    brand: string
-    expDate: Date | string
+    stripeMethodId: string
+    method: string
+    status: string
     createdAt?: Date | string
   }
 
   export type ClientUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
     cpf?: StringFieldUpdateOperationsInput | string
-    token?: StringFieldUpdateOperationsInput | string
-    last4?: StringFieldUpdateOperationsInput | string
-    brand?: StringFieldUpdateOperationsInput | string
-    expDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    stripeMethodId?: StringFieldUpdateOperationsInput | string
+    method?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type ClientUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
     cpf?: StringFieldUpdateOperationsInput | string
-    token?: StringFieldUpdateOperationsInput | string
-    last4?: StringFieldUpdateOperationsInput | string
-    brand?: StringFieldUpdateOperationsInput | string
-    expDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    stripeMethodId?: StringFieldUpdateOperationsInput | string
+    method?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type OrderCreateInput = {
     id?: string
+    stripeIntentId: string
     createdAt?: Date | string
     client: ClientCreateNestedOneWithoutOrderInput
     product: ProductCreateNestedOneWithoutOrderInput
@@ -6325,6 +6345,7 @@ export namespace Prisma {
 
   export type OrderUncheckedCreateInput = {
     id?: string
+    stripeIntentId: string
     clientId: string
     productId: string
     createdAt?: Date | string
@@ -6332,6 +6353,7 @@ export namespace Prisma {
 
   export type OrderUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
+    stripeIntentId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     client?: ClientUpdateOneRequiredWithoutOrderNestedInput
     product?: ProductUpdateOneRequiredWithoutOrderNestedInput
@@ -6339,6 +6361,7 @@ export namespace Prisma {
 
   export type OrderUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
+    stripeIntentId?: StringFieldUpdateOperationsInput | string
     clientId?: StringFieldUpdateOperationsInput | string
     productId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -6346,6 +6369,7 @@ export namespace Prisma {
 
   export type OrderCreateManyInput = {
     id?: string
+    stripeIntentId: string
     clientId: string
     productId: string
     createdAt?: Date | string
@@ -6353,11 +6377,13 @@ export namespace Prisma {
 
   export type OrderUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
+    stripeIntentId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type OrderUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
+    stripeIntentId?: StringFieldUpdateOperationsInput | string
     clientId?: StringFieldUpdateOperationsInput | string
     productId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -6389,9 +6415,14 @@ export namespace Prisma {
     not?: NestedDateTimeFilter<$PrismaModel> | Date | string
   }
 
-  export type ProductNullableScalarRelationFilter = {
-    is?: ProductWhereInput | null
-    isNot?: ProductWhereInput | null
+  export type ProductListRelationFilter = {
+    every?: ProductWhereInput
+    some?: ProductWhereInput
+    none?: ProductWhereInput
+  }
+
+  export type ProductOrderByRelationAggregateInput = {
+    _count?: SortOrder
   }
 
   export type AdminCountOrderByAggregateInput = {
@@ -6571,36 +6602,41 @@ export namespace Prisma {
     _max?: NestedIntFilter<$PrismaModel>
   }
 
+  export type OrderNullableScalarRelationFilter = {
+    is?: OrderWhereInput | null
+    isNot?: OrderWhereInput | null
+  }
+
   export type ClientCountOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
+    email?: SortOrder
     cpf?: SortOrder
-    token?: SortOrder
-    last4?: SortOrder
-    brand?: SortOrder
-    expDate?: SortOrder
+    stripeMethodId?: SortOrder
+    method?: SortOrder
+    status?: SortOrder
     createdAt?: SortOrder
   }
 
   export type ClientMaxOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
+    email?: SortOrder
     cpf?: SortOrder
-    token?: SortOrder
-    last4?: SortOrder
-    brand?: SortOrder
-    expDate?: SortOrder
+    stripeMethodId?: SortOrder
+    method?: SortOrder
+    status?: SortOrder
     createdAt?: SortOrder
   }
 
   export type ClientMinOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
+    email?: SortOrder
     cpf?: SortOrder
-    token?: SortOrder
-    last4?: SortOrder
-    brand?: SortOrder
-    expDate?: SortOrder
+    stripeMethodId?: SortOrder
+    method?: SortOrder
+    status?: SortOrder
     createdAt?: SortOrder
   }
 
@@ -6616,6 +6652,7 @@ export namespace Prisma {
 
   export type OrderCountOrderByAggregateInput = {
     id?: SortOrder
+    stripeIntentId?: SortOrder
     clientId?: SortOrder
     productId?: SortOrder
     createdAt?: SortOrder
@@ -6623,6 +6660,7 @@ export namespace Prisma {
 
   export type OrderMaxOrderByAggregateInput = {
     id?: SortOrder
+    stripeIntentId?: SortOrder
     clientId?: SortOrder
     productId?: SortOrder
     createdAt?: SortOrder
@@ -6630,21 +6668,24 @@ export namespace Prisma {
 
   export type OrderMinOrderByAggregateInput = {
     id?: SortOrder
+    stripeIntentId?: SortOrder
     clientId?: SortOrder
     productId?: SortOrder
     createdAt?: SortOrder
   }
 
-  export type ProductCreateNestedOneWithoutAdminInput = {
-    create?: XOR<ProductCreateWithoutAdminInput, ProductUncheckedCreateWithoutAdminInput>
-    connectOrCreate?: ProductCreateOrConnectWithoutAdminInput
-    connect?: ProductWhereUniqueInput
+  export type ProductCreateNestedManyWithoutAdminInput = {
+    create?: XOR<ProductCreateWithoutAdminInput, ProductUncheckedCreateWithoutAdminInput> | ProductCreateWithoutAdminInput[] | ProductUncheckedCreateWithoutAdminInput[]
+    connectOrCreate?: ProductCreateOrConnectWithoutAdminInput | ProductCreateOrConnectWithoutAdminInput[]
+    createMany?: ProductCreateManyAdminInputEnvelope
+    connect?: ProductWhereUniqueInput | ProductWhereUniqueInput[]
   }
 
-  export type ProductUncheckedCreateNestedOneWithoutAdminInput = {
-    create?: XOR<ProductCreateWithoutAdminInput, ProductUncheckedCreateWithoutAdminInput>
-    connectOrCreate?: ProductCreateOrConnectWithoutAdminInput
-    connect?: ProductWhereUniqueInput
+  export type ProductUncheckedCreateNestedManyWithoutAdminInput = {
+    create?: XOR<ProductCreateWithoutAdminInput, ProductUncheckedCreateWithoutAdminInput> | ProductCreateWithoutAdminInput[] | ProductUncheckedCreateWithoutAdminInput[]
+    connectOrCreate?: ProductCreateOrConnectWithoutAdminInput | ProductCreateOrConnectWithoutAdminInput[]
+    createMany?: ProductCreateManyAdminInputEnvelope
+    connect?: ProductWhereUniqueInput | ProductWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -6655,24 +6696,32 @@ export namespace Prisma {
     set?: Date | string
   }
 
-  export type ProductUpdateOneWithoutAdminNestedInput = {
-    create?: XOR<ProductCreateWithoutAdminInput, ProductUncheckedCreateWithoutAdminInput>
-    connectOrCreate?: ProductCreateOrConnectWithoutAdminInput
-    upsert?: ProductUpsertWithoutAdminInput
-    disconnect?: ProductWhereInput | boolean
-    delete?: ProductWhereInput | boolean
-    connect?: ProductWhereUniqueInput
-    update?: XOR<XOR<ProductUpdateToOneWithWhereWithoutAdminInput, ProductUpdateWithoutAdminInput>, ProductUncheckedUpdateWithoutAdminInput>
+  export type ProductUpdateManyWithoutAdminNestedInput = {
+    create?: XOR<ProductCreateWithoutAdminInput, ProductUncheckedCreateWithoutAdminInput> | ProductCreateWithoutAdminInput[] | ProductUncheckedCreateWithoutAdminInput[]
+    connectOrCreate?: ProductCreateOrConnectWithoutAdminInput | ProductCreateOrConnectWithoutAdminInput[]
+    upsert?: ProductUpsertWithWhereUniqueWithoutAdminInput | ProductUpsertWithWhereUniqueWithoutAdminInput[]
+    createMany?: ProductCreateManyAdminInputEnvelope
+    set?: ProductWhereUniqueInput | ProductWhereUniqueInput[]
+    disconnect?: ProductWhereUniqueInput | ProductWhereUniqueInput[]
+    delete?: ProductWhereUniqueInput | ProductWhereUniqueInput[]
+    connect?: ProductWhereUniqueInput | ProductWhereUniqueInput[]
+    update?: ProductUpdateWithWhereUniqueWithoutAdminInput | ProductUpdateWithWhereUniqueWithoutAdminInput[]
+    updateMany?: ProductUpdateManyWithWhereWithoutAdminInput | ProductUpdateManyWithWhereWithoutAdminInput[]
+    deleteMany?: ProductScalarWhereInput | ProductScalarWhereInput[]
   }
 
-  export type ProductUncheckedUpdateOneWithoutAdminNestedInput = {
-    create?: XOR<ProductCreateWithoutAdminInput, ProductUncheckedCreateWithoutAdminInput>
-    connectOrCreate?: ProductCreateOrConnectWithoutAdminInput
-    upsert?: ProductUpsertWithoutAdminInput
-    disconnect?: ProductWhereInput | boolean
-    delete?: ProductWhereInput | boolean
-    connect?: ProductWhereUniqueInput
-    update?: XOR<XOR<ProductUpdateToOneWithWhereWithoutAdminInput, ProductUpdateWithoutAdminInput>, ProductUncheckedUpdateWithoutAdminInput>
+  export type ProductUncheckedUpdateManyWithoutAdminNestedInput = {
+    create?: XOR<ProductCreateWithoutAdminInput, ProductUncheckedCreateWithoutAdminInput> | ProductCreateWithoutAdminInput[] | ProductUncheckedCreateWithoutAdminInput[]
+    connectOrCreate?: ProductCreateOrConnectWithoutAdminInput | ProductCreateOrConnectWithoutAdminInput[]
+    upsert?: ProductUpsertWithWhereUniqueWithoutAdminInput | ProductUpsertWithWhereUniqueWithoutAdminInput[]
+    createMany?: ProductCreateManyAdminInputEnvelope
+    set?: ProductWhereUniqueInput | ProductWhereUniqueInput[]
+    disconnect?: ProductWhereUniqueInput | ProductWhereUniqueInput[]
+    delete?: ProductWhereUniqueInput | ProductWhereUniqueInput[]
+    connect?: ProductWhereUniqueInput | ProductWhereUniqueInput[]
+    update?: ProductUpdateWithWhereUniqueWithoutAdminInput | ProductUpdateWithWhereUniqueWithoutAdminInput[]
+    updateMany?: ProductUpdateManyWithWhereWithoutAdminInput | ProductUpdateManyWithWhereWithoutAdminInput[]
+    deleteMany?: ProductScalarWhereInput | ProductScalarWhereInput[]
   }
 
   export type OrderCreateNestedManyWithoutProductInput = {
@@ -6747,46 +6796,36 @@ export namespace Prisma {
     deleteMany?: OrderScalarWhereInput | OrderScalarWhereInput[]
   }
 
-  export type OrderCreateNestedManyWithoutClientInput = {
-    create?: XOR<OrderCreateWithoutClientInput, OrderUncheckedCreateWithoutClientInput> | OrderCreateWithoutClientInput[] | OrderUncheckedCreateWithoutClientInput[]
-    connectOrCreate?: OrderCreateOrConnectWithoutClientInput | OrderCreateOrConnectWithoutClientInput[]
-    createMany?: OrderCreateManyClientInputEnvelope
-    connect?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
+  export type OrderCreateNestedOneWithoutClientInput = {
+    create?: XOR<OrderCreateWithoutClientInput, OrderUncheckedCreateWithoutClientInput>
+    connectOrCreate?: OrderCreateOrConnectWithoutClientInput
+    connect?: OrderWhereUniqueInput
   }
 
-  export type OrderUncheckedCreateNestedManyWithoutClientInput = {
-    create?: XOR<OrderCreateWithoutClientInput, OrderUncheckedCreateWithoutClientInput> | OrderCreateWithoutClientInput[] | OrderUncheckedCreateWithoutClientInput[]
-    connectOrCreate?: OrderCreateOrConnectWithoutClientInput | OrderCreateOrConnectWithoutClientInput[]
-    createMany?: OrderCreateManyClientInputEnvelope
-    connect?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
+  export type OrderUncheckedCreateNestedOneWithoutClientInput = {
+    create?: XOR<OrderCreateWithoutClientInput, OrderUncheckedCreateWithoutClientInput>
+    connectOrCreate?: OrderCreateOrConnectWithoutClientInput
+    connect?: OrderWhereUniqueInput
   }
 
-  export type OrderUpdateManyWithoutClientNestedInput = {
-    create?: XOR<OrderCreateWithoutClientInput, OrderUncheckedCreateWithoutClientInput> | OrderCreateWithoutClientInput[] | OrderUncheckedCreateWithoutClientInput[]
-    connectOrCreate?: OrderCreateOrConnectWithoutClientInput | OrderCreateOrConnectWithoutClientInput[]
-    upsert?: OrderUpsertWithWhereUniqueWithoutClientInput | OrderUpsertWithWhereUniqueWithoutClientInput[]
-    createMany?: OrderCreateManyClientInputEnvelope
-    set?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
-    disconnect?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
-    delete?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
-    connect?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
-    update?: OrderUpdateWithWhereUniqueWithoutClientInput | OrderUpdateWithWhereUniqueWithoutClientInput[]
-    updateMany?: OrderUpdateManyWithWhereWithoutClientInput | OrderUpdateManyWithWhereWithoutClientInput[]
-    deleteMany?: OrderScalarWhereInput | OrderScalarWhereInput[]
+  export type OrderUpdateOneWithoutClientNestedInput = {
+    create?: XOR<OrderCreateWithoutClientInput, OrderUncheckedCreateWithoutClientInput>
+    connectOrCreate?: OrderCreateOrConnectWithoutClientInput
+    upsert?: OrderUpsertWithoutClientInput
+    disconnect?: OrderWhereInput | boolean
+    delete?: OrderWhereInput | boolean
+    connect?: OrderWhereUniqueInput
+    update?: XOR<XOR<OrderUpdateToOneWithWhereWithoutClientInput, OrderUpdateWithoutClientInput>, OrderUncheckedUpdateWithoutClientInput>
   }
 
-  export type OrderUncheckedUpdateManyWithoutClientNestedInput = {
-    create?: XOR<OrderCreateWithoutClientInput, OrderUncheckedCreateWithoutClientInput> | OrderCreateWithoutClientInput[] | OrderUncheckedCreateWithoutClientInput[]
-    connectOrCreate?: OrderCreateOrConnectWithoutClientInput | OrderCreateOrConnectWithoutClientInput[]
-    upsert?: OrderUpsertWithWhereUniqueWithoutClientInput | OrderUpsertWithWhereUniqueWithoutClientInput[]
-    createMany?: OrderCreateManyClientInputEnvelope
-    set?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
-    disconnect?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
-    delete?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
-    connect?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
-    update?: OrderUpdateWithWhereUniqueWithoutClientInput | OrderUpdateWithWhereUniqueWithoutClientInput[]
-    updateMany?: OrderUpdateManyWithWhereWithoutClientInput | OrderUpdateManyWithWhereWithoutClientInput[]
-    deleteMany?: OrderScalarWhereInput | OrderScalarWhereInput[]
+  export type OrderUncheckedUpdateOneWithoutClientNestedInput = {
+    create?: XOR<OrderCreateWithoutClientInput, OrderUncheckedCreateWithoutClientInput>
+    connectOrCreate?: OrderCreateOrConnectWithoutClientInput
+    upsert?: OrderUpsertWithoutClientInput
+    disconnect?: OrderWhereInput | boolean
+    delete?: OrderWhereInput | boolean
+    connect?: OrderWhereUniqueInput
+    update?: XOR<XOR<OrderUpdateToOneWithWhereWithoutClientInput, OrderUpdateWithoutClientInput>, OrderUncheckedUpdateWithoutClientInput>
   }
 
   export type ClientCreateNestedOneWithoutOrderInput = {
@@ -6967,49 +7006,52 @@ export namespace Prisma {
     create: XOR<ProductCreateWithoutAdminInput, ProductUncheckedCreateWithoutAdminInput>
   }
 
-  export type ProductUpsertWithoutAdminInput = {
-    update: XOR<ProductUpdateWithoutAdminInput, ProductUncheckedUpdateWithoutAdminInput>
-    create: XOR<ProductCreateWithoutAdminInput, ProductUncheckedCreateWithoutAdminInput>
-    where?: ProductWhereInput
+  export type ProductCreateManyAdminInputEnvelope = {
+    data: ProductCreateManyAdminInput | ProductCreateManyAdminInput[]
+    skipDuplicates?: boolean
   }
 
-  export type ProductUpdateToOneWithWhereWithoutAdminInput = {
-    where?: ProductWhereInput
+  export type ProductUpsertWithWhereUniqueWithoutAdminInput = {
+    where: ProductWhereUniqueInput
+    update: XOR<ProductUpdateWithoutAdminInput, ProductUncheckedUpdateWithoutAdminInput>
+    create: XOR<ProductCreateWithoutAdminInput, ProductUncheckedCreateWithoutAdminInput>
+  }
+
+  export type ProductUpdateWithWhereUniqueWithoutAdminInput = {
+    where: ProductWhereUniqueInput
     data: XOR<ProductUpdateWithoutAdminInput, ProductUncheckedUpdateWithoutAdminInput>
   }
 
-  export type ProductUpdateWithoutAdminInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    title?: StringFieldUpdateOperationsInput | string
-    description?: StringFieldUpdateOperationsInput | string
-    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    picture?: StringFieldUpdateOperationsInput | string
-    quantity?: IntFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    Order?: OrderUpdateManyWithoutProductNestedInput
+  export type ProductUpdateManyWithWhereWithoutAdminInput = {
+    where: ProductScalarWhereInput
+    data: XOR<ProductUpdateManyMutationInput, ProductUncheckedUpdateManyWithoutAdminInput>
   }
 
-  export type ProductUncheckedUpdateWithoutAdminInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    title?: StringFieldUpdateOperationsInput | string
-    description?: StringFieldUpdateOperationsInput | string
-    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    picture?: StringFieldUpdateOperationsInput | string
-    quantity?: IntFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    Order?: OrderUncheckedUpdateManyWithoutProductNestedInput
+  export type ProductScalarWhereInput = {
+    AND?: ProductScalarWhereInput | ProductScalarWhereInput[]
+    OR?: ProductScalarWhereInput[]
+    NOT?: ProductScalarWhereInput | ProductScalarWhereInput[]
+    id?: StringFilter<"Product"> | string
+    title?: StringFilter<"Product"> | string
+    description?: StringFilter<"Product"> | string
+    price?: DecimalFilter<"Product"> | Decimal | DecimalJsLike | number | string
+    picture?: StringFilter<"Product"> | string
+    quantity?: IntFilter<"Product"> | number
+    adminId?: StringFilter<"Product"> | string
+    createdAt?: DateTimeFilter<"Product"> | Date | string
+    updatedAt?: DateTimeFilter<"Product"> | Date | string
   }
 
   export type OrderCreateWithoutProductInput = {
     id?: string
+    stripeIntentId: string
     createdAt?: Date | string
     client: ClientCreateNestedOneWithoutOrderInput
   }
 
   export type OrderUncheckedCreateWithoutProductInput = {
     id?: string
+    stripeIntentId: string
     clientId: string
     createdAt?: Date | string
   }
@@ -7070,6 +7112,7 @@ export namespace Prisma {
     OR?: OrderScalarWhereInput[]
     NOT?: OrderScalarWhereInput | OrderScalarWhereInput[]
     id?: StringFilter<"Order"> | string
+    stripeIntentId?: StringFilter<"Order"> | string
     clientId?: StringFilter<"Order"> | string
     productId?: StringFilter<"Order"> | string
     createdAt?: DateTimeFilter<"Order"> | Date | string
@@ -7108,12 +7151,14 @@ export namespace Prisma {
 
   export type OrderCreateWithoutClientInput = {
     id?: string
+    stripeIntentId: string
     createdAt?: Date | string
     product: ProductCreateNestedOneWithoutOrderInput
   }
 
   export type OrderUncheckedCreateWithoutClientInput = {
     id?: string
+    stripeIntentId: string
     productId: string
     createdAt?: Date | string
   }
@@ -7123,46 +7168,50 @@ export namespace Prisma {
     create: XOR<OrderCreateWithoutClientInput, OrderUncheckedCreateWithoutClientInput>
   }
 
-  export type OrderCreateManyClientInputEnvelope = {
-    data: OrderCreateManyClientInput | OrderCreateManyClientInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type OrderUpsertWithWhereUniqueWithoutClientInput = {
-    where: OrderWhereUniqueInput
+  export type OrderUpsertWithoutClientInput = {
     update: XOR<OrderUpdateWithoutClientInput, OrderUncheckedUpdateWithoutClientInput>
     create: XOR<OrderCreateWithoutClientInput, OrderUncheckedCreateWithoutClientInput>
+    where?: OrderWhereInput
   }
 
-  export type OrderUpdateWithWhereUniqueWithoutClientInput = {
-    where: OrderWhereUniqueInput
+  export type OrderUpdateToOneWithWhereWithoutClientInput = {
+    where?: OrderWhereInput
     data: XOR<OrderUpdateWithoutClientInput, OrderUncheckedUpdateWithoutClientInput>
   }
 
-  export type OrderUpdateManyWithWhereWithoutClientInput = {
-    where: OrderScalarWhereInput
-    data: XOR<OrderUpdateManyMutationInput, OrderUncheckedUpdateManyWithoutClientInput>
+  export type OrderUpdateWithoutClientInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    stripeIntentId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    product?: ProductUpdateOneRequiredWithoutOrderNestedInput
+  }
+
+  export type OrderUncheckedUpdateWithoutClientInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    stripeIntentId?: StringFieldUpdateOperationsInput | string
+    productId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type ClientCreateWithoutOrderInput = {
     id?: string
     name: string
+    email: string
     cpf: string
-    token: string
-    last4: string
-    brand: string
-    expDate: Date | string
+    stripeMethodId: string
+    method: string
+    status: string
     createdAt?: Date | string
   }
 
   export type ClientUncheckedCreateWithoutOrderInput = {
     id?: string
     name: string
+    email: string
     cpf: string
-    token: string
-    last4: string
-    brand: string
-    expDate: Date | string
+    stripeMethodId: string
+    method: string
+    status: string
     createdAt?: Date | string
   }
 
@@ -7214,22 +7263,22 @@ export namespace Prisma {
   export type ClientUpdateWithoutOrderInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
     cpf?: StringFieldUpdateOperationsInput | string
-    token?: StringFieldUpdateOperationsInput | string
-    last4?: StringFieldUpdateOperationsInput | string
-    brand?: StringFieldUpdateOperationsInput | string
-    expDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    stripeMethodId?: StringFieldUpdateOperationsInput | string
+    method?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type ClientUncheckedUpdateWithoutOrderInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
     cpf?: StringFieldUpdateOperationsInput | string
-    token?: StringFieldUpdateOperationsInput | string
-    last4?: StringFieldUpdateOperationsInput | string
-    brand?: StringFieldUpdateOperationsInput | string
-    expDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    stripeMethodId?: StringFieldUpdateOperationsInput | string
+    method?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -7268,51 +7317,77 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type ProductCreateManyAdminInput = {
+    id?: string
+    title: string
+    description: string
+    price: Decimal | DecimalJsLike | number | string
+    picture: string
+    quantity: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ProductUpdateWithoutAdminInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    picture?: StringFieldUpdateOperationsInput | string
+    quantity?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    Order?: OrderUpdateManyWithoutProductNestedInput
+  }
+
+  export type ProductUncheckedUpdateWithoutAdminInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    picture?: StringFieldUpdateOperationsInput | string
+    quantity?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    Order?: OrderUncheckedUpdateManyWithoutProductNestedInput
+  }
+
+  export type ProductUncheckedUpdateManyWithoutAdminInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    picture?: StringFieldUpdateOperationsInput | string
+    quantity?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type OrderCreateManyProductInput = {
     id?: string
+    stripeIntentId: string
     clientId: string
     createdAt?: Date | string
   }
 
   export type OrderUpdateWithoutProductInput = {
     id?: StringFieldUpdateOperationsInput | string
+    stripeIntentId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     client?: ClientUpdateOneRequiredWithoutOrderNestedInput
   }
 
   export type OrderUncheckedUpdateWithoutProductInput = {
     id?: StringFieldUpdateOperationsInput | string
+    stripeIntentId?: StringFieldUpdateOperationsInput | string
     clientId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type OrderUncheckedUpdateManyWithoutProductInput = {
     id?: StringFieldUpdateOperationsInput | string
+    stripeIntentId?: StringFieldUpdateOperationsInput | string
     clientId?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type OrderCreateManyClientInput = {
-    id?: string
-    productId: string
-    createdAt?: Date | string
-  }
-
-  export type OrderUpdateWithoutClientInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    product?: ProductUpdateOneRequiredWithoutOrderNestedInput
-  }
-
-  export type OrderUncheckedUpdateWithoutClientInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    productId?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type OrderUncheckedUpdateManyWithoutClientInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    productId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 

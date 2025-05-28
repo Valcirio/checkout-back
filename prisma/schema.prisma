@@ -22,7 +22,7 @@ model Admin {
   cnpj     String @unique @db.VarChar(14)
   password String
 
-  Product Product?
+  Product Product[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -39,31 +39,32 @@ model Product {
   Order Order[]
 
   admin   Admin  @relation(fields: [adminId], references: [id])
-  adminId String @unique
+  adminId String
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
 model Client {
-  id      String   @id @default(uuid(7))
-  name    String
-  cpf     String   @db.VarChar(11)
-  token   String
-  last4   String   @db.VarChar(4)
-  brand   String
-  expDate DateTime
+  id             String @id @default(uuid(7))
+  name           String
+  email          String
+  cpf            String @db.VarChar(11)
+  stripeMethodId String @unique
+  method         String
+  status         String
 
-  Order Order[]
+  Order Order?
 
   createdAt DateTime @default(now())
 }
 
 model Order {
-  id String @id @default(uuid(7))
+  id             String @id @default(uuid(7))
+  stripeIntentId String @unique
 
   client   Client @relation(fields: [clientId], references: [id])
-  clientId String
+  clientId String @unique
 
   product   Product @relation(fields: [productId], references: [id])
   productId String

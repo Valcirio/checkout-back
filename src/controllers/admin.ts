@@ -51,7 +51,6 @@ export async function FindAdminById (
     })
 
     if(!result){
-        // throw new Error('Usuário com este e-mail já existe.', { cause: STATUS_CODE.BadRequest })
         return reply.status(STATUS_CODE.NotFound).send({message: 'Usuário não encontrado.'})
     }
 

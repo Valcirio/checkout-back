@@ -10,14 +10,13 @@ import fastifyMultipart from '@fastify/multipart'
 import adminRoutes from './routes/admin'
 import productRoutes from './routes/product'
 import { authRouter } from './routes/auth'
+import orderRoutes from './routes/order'
 
 class CheckoutApp {
     public server: FastifyInstance
 
     constructor () {
         this.server = Fastify().withTypeProvider<ZodTypeProvider>()
-        this.server.register(fastifyJwt, {secret: process.env.JWT_PASS as string})
-
         this.middleware()
         this.setZodCompiler()
         this.setRoutes()
@@ -25,7 +24,7 @@ class CheckoutApp {
 
     private middleware() {
         this.server.register(fastifyCors, { origin: '*' })
-        // this.server.register(fastifyMultipart, { attachFieldsToBody: "keyValues", limits: { fileSize: 10*1024*1024, files: 1 } })
+        this.server.register(fastifyJwt, {secret: process.env.JWT_PASS as string})
     }
 
     private setZodCompiler(){
@@ -37,6 +36,7 @@ class CheckoutApp {
         this.server.register(adminRoutes, { prefix: '/admin' })
         this.server.register(authRouter, { prefix: '/auth' })
         this.server.register(productRoutes, { prefix: '/product' })
+        this.server.register(orderRoutes, {prefix: '/order'})
     }
 
 
