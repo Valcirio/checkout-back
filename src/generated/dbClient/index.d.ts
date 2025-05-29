@@ -3506,9 +3506,7 @@ export namespace Prisma {
     name: string | null
     email: string | null
     cpf: string | null
-    stripeMethodId: string | null
     method: string | null
-    status: string | null
     createdAt: Date | null
   }
 
@@ -3517,9 +3515,7 @@ export namespace Prisma {
     name: string | null
     email: string | null
     cpf: string | null
-    stripeMethodId: string | null
     method: string | null
-    status: string | null
     createdAt: Date | null
   }
 
@@ -3528,9 +3524,7 @@ export namespace Prisma {
     name: number
     email: number
     cpf: number
-    stripeMethodId: number
     method: number
-    status: number
     createdAt: number
     _all: number
   }
@@ -3541,9 +3535,7 @@ export namespace Prisma {
     name?: true
     email?: true
     cpf?: true
-    stripeMethodId?: true
     method?: true
-    status?: true
     createdAt?: true
   }
 
@@ -3552,9 +3544,7 @@ export namespace Prisma {
     name?: true
     email?: true
     cpf?: true
-    stripeMethodId?: true
     method?: true
-    status?: true
     createdAt?: true
   }
 
@@ -3563,9 +3553,7 @@ export namespace Prisma {
     name?: true
     email?: true
     cpf?: true
-    stripeMethodId?: true
     method?: true
-    status?: true
     createdAt?: true
     _all?: true
   }
@@ -3647,9 +3635,7 @@ export namespace Prisma {
     name: string
     email: string
     cpf: string
-    stripeMethodId: string
-    method: string
-    status: string
+    method: string | null
     createdAt: Date
     _count: ClientCountAggregateOutputType | null
     _min: ClientMinAggregateOutputType | null
@@ -3675,9 +3661,7 @@ export namespace Prisma {
     name?: boolean
     email?: boolean
     cpf?: boolean
-    stripeMethodId?: boolean
     method?: boolean
-    status?: boolean
     createdAt?: boolean
     Order?: boolean | Client$OrderArgs<ExtArgs>
   }, ExtArgs["result"]["client"]>
@@ -3687,9 +3671,7 @@ export namespace Prisma {
     name?: boolean
     email?: boolean
     cpf?: boolean
-    stripeMethodId?: boolean
     method?: boolean
-    status?: boolean
     createdAt?: boolean
   }, ExtArgs["result"]["client"]>
 
@@ -3698,9 +3680,7 @@ export namespace Prisma {
     name?: boolean
     email?: boolean
     cpf?: boolean
-    stripeMethodId?: boolean
     method?: boolean
-    status?: boolean
     createdAt?: boolean
   }, ExtArgs["result"]["client"]>
 
@@ -3709,13 +3689,11 @@ export namespace Prisma {
     name?: boolean
     email?: boolean
     cpf?: boolean
-    stripeMethodId?: boolean
     method?: boolean
-    status?: boolean
     createdAt?: boolean
   }
 
-  export type ClientOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "cpf" | "stripeMethodId" | "method" | "status" | "createdAt", ExtArgs["result"]["client"]>
+  export type ClientOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "cpf" | "method" | "createdAt", ExtArgs["result"]["client"]>
   export type ClientInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     Order?: boolean | Client$OrderArgs<ExtArgs>
   }
@@ -3732,9 +3710,7 @@ export namespace Prisma {
       name: string
       email: string
       cpf: string
-      stripeMethodId: string
-      method: string
-      status: string
+      method: string | null
       createdAt: Date
     }, ExtArgs["result"]["client"]>
     composites: {}
@@ -4164,9 +4140,7 @@ export namespace Prisma {
     readonly name: FieldRef<"Client", 'String'>
     readonly email: FieldRef<"Client", 'String'>
     readonly cpf: FieldRef<"Client", 'String'>
-    readonly stripeMethodId: FieldRef<"Client", 'String'>
     readonly method: FieldRef<"Client", 'String'>
-    readonly status: FieldRef<"Client", 'String'>
     readonly createdAt: FieldRef<"Client", 'DateTime'>
   }
     
@@ -4606,6 +4580,7 @@ export namespace Prisma {
   export type OrderMinAggregateOutputType = {
     id: string | null
     stripeIntentId: string | null
+    status: string | null
     clientId: string | null
     productId: string | null
     createdAt: Date | null
@@ -4614,6 +4589,7 @@ export namespace Prisma {
   export type OrderMaxAggregateOutputType = {
     id: string | null
     stripeIntentId: string | null
+    status: string | null
     clientId: string | null
     productId: string | null
     createdAt: Date | null
@@ -4622,6 +4598,7 @@ export namespace Prisma {
   export type OrderCountAggregateOutputType = {
     id: number
     stripeIntentId: number
+    status: number
     clientId: number
     productId: number
     createdAt: number
@@ -4632,6 +4609,7 @@ export namespace Prisma {
   export type OrderMinAggregateInputType = {
     id?: true
     stripeIntentId?: true
+    status?: true
     clientId?: true
     productId?: true
     createdAt?: true
@@ -4640,6 +4618,7 @@ export namespace Prisma {
   export type OrderMaxAggregateInputType = {
     id?: true
     stripeIntentId?: true
+    status?: true
     clientId?: true
     productId?: true
     createdAt?: true
@@ -4648,6 +4627,7 @@ export namespace Prisma {
   export type OrderCountAggregateInputType = {
     id?: true
     stripeIntentId?: true
+    status?: true
     clientId?: true
     productId?: true
     createdAt?: true
@@ -4729,6 +4709,7 @@ export namespace Prisma {
   export type OrderGroupByOutputType = {
     id: string
     stripeIntentId: string
+    status: string
     clientId: string
     productId: string
     createdAt: Date
@@ -4754,6 +4735,7 @@ export namespace Prisma {
   export type OrderSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     stripeIntentId?: boolean
+    status?: boolean
     clientId?: boolean
     productId?: boolean
     createdAt?: boolean
@@ -4764,6 +4746,7 @@ export namespace Prisma {
   export type OrderSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     stripeIntentId?: boolean
+    status?: boolean
     clientId?: boolean
     productId?: boolean
     createdAt?: boolean
@@ -4774,6 +4757,7 @@ export namespace Prisma {
   export type OrderSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     stripeIntentId?: boolean
+    status?: boolean
     clientId?: boolean
     productId?: boolean
     createdAt?: boolean
@@ -4784,12 +4768,13 @@ export namespace Prisma {
   export type OrderSelectScalar = {
     id?: boolean
     stripeIntentId?: boolean
+    status?: boolean
     clientId?: boolean
     productId?: boolean
     createdAt?: boolean
   }
 
-  export type OrderOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "stripeIntentId" | "clientId" | "productId" | "createdAt", ExtArgs["result"]["order"]>
+  export type OrderOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "stripeIntentId" | "status" | "clientId" | "productId" | "createdAt", ExtArgs["result"]["order"]>
   export type OrderInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     client?: boolean | ClientDefaultArgs<ExtArgs>
     product?: boolean | ProductDefaultArgs<ExtArgs>
@@ -4812,6 +4797,7 @@ export namespace Prisma {
     scalars: $Extensions.GetPayloadResult<{
       id: string
       stripeIntentId: string
+      status: string
       clientId: string
       productId: string
       createdAt: Date
@@ -5242,6 +5228,7 @@ export namespace Prisma {
   interface OrderFieldRefs {
     readonly id: FieldRef<"Order", 'String'>
     readonly stripeIntentId: FieldRef<"Order", 'String'>
+    readonly status: FieldRef<"Order", 'String'>
     readonly clientId: FieldRef<"Order", 'String'>
     readonly productId: FieldRef<"Order", 'String'>
     readonly createdAt: FieldRef<"Order", 'DateTime'>
@@ -5706,9 +5693,7 @@ export namespace Prisma {
     name: 'name',
     email: 'email',
     cpf: 'cpf',
-    stripeMethodId: 'stripeMethodId',
     method: 'method',
-    status: 'status',
     createdAt: 'createdAt'
   };
 
@@ -5718,6 +5703,7 @@ export namespace Prisma {
   export const OrderScalarFieldEnum: {
     id: 'id',
     stripeIntentId: 'stripeIntentId',
+    status: 'status',
     clientId: 'clientId',
     productId: 'productId',
     createdAt: 'createdAt'
@@ -5740,6 +5726,14 @@ export namespace Prisma {
   };
 
   export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode]
+
+
+  export const NullsOrder: {
+    first: 'first',
+    last: 'last'
+  };
+
+  export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
 
 
   /**
@@ -5973,9 +5967,7 @@ export namespace Prisma {
     name?: StringFilter<"Client"> | string
     email?: StringFilter<"Client"> | string
     cpf?: StringFilter<"Client"> | string
-    stripeMethodId?: StringFilter<"Client"> | string
-    method?: StringFilter<"Client"> | string
-    status?: StringFilter<"Client"> | string
+    method?: StringNullableFilter<"Client"> | string | null
     createdAt?: DateTimeFilter<"Client"> | Date | string
     Order?: XOR<OrderNullableScalarRelationFilter, OrderWhereInput> | null
   }
@@ -5985,36 +5977,30 @@ export namespace Prisma {
     name?: SortOrder
     email?: SortOrder
     cpf?: SortOrder
-    stripeMethodId?: SortOrder
-    method?: SortOrder
-    status?: SortOrder
+    method?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     Order?: OrderOrderByWithRelationInput
   }
 
   export type ClientWhereUniqueInput = Prisma.AtLeast<{
     id?: string
-    stripeMethodId?: string
     AND?: ClientWhereInput | ClientWhereInput[]
     OR?: ClientWhereInput[]
     NOT?: ClientWhereInput | ClientWhereInput[]
     name?: StringFilter<"Client"> | string
     email?: StringFilter<"Client"> | string
     cpf?: StringFilter<"Client"> | string
-    method?: StringFilter<"Client"> | string
-    status?: StringFilter<"Client"> | string
+    method?: StringNullableFilter<"Client"> | string | null
     createdAt?: DateTimeFilter<"Client"> | Date | string
     Order?: XOR<OrderNullableScalarRelationFilter, OrderWhereInput> | null
-  }, "id" | "stripeMethodId">
+  }, "id">
 
   export type ClientOrderByWithAggregationInput = {
     id?: SortOrder
     name?: SortOrder
     email?: SortOrder
     cpf?: SortOrder
-    stripeMethodId?: SortOrder
-    method?: SortOrder
-    status?: SortOrder
+    method?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     _count?: ClientCountOrderByAggregateInput
     _max?: ClientMaxOrderByAggregateInput
@@ -6029,9 +6015,7 @@ export namespace Prisma {
     name?: StringWithAggregatesFilter<"Client"> | string
     email?: StringWithAggregatesFilter<"Client"> | string
     cpf?: StringWithAggregatesFilter<"Client"> | string
-    stripeMethodId?: StringWithAggregatesFilter<"Client"> | string
-    method?: StringWithAggregatesFilter<"Client"> | string
-    status?: StringWithAggregatesFilter<"Client"> | string
+    method?: StringNullableWithAggregatesFilter<"Client"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Client"> | Date | string
   }
 
@@ -6041,6 +6025,7 @@ export namespace Prisma {
     NOT?: OrderWhereInput | OrderWhereInput[]
     id?: StringFilter<"Order"> | string
     stripeIntentId?: StringFilter<"Order"> | string
+    status?: StringFilter<"Order"> | string
     clientId?: StringFilter<"Order"> | string
     productId?: StringFilter<"Order"> | string
     createdAt?: DateTimeFilter<"Order"> | Date | string
@@ -6051,6 +6036,7 @@ export namespace Prisma {
   export type OrderOrderByWithRelationInput = {
     id?: SortOrder
     stripeIntentId?: SortOrder
+    status?: SortOrder
     clientId?: SortOrder
     productId?: SortOrder
     createdAt?: SortOrder
@@ -6065,6 +6051,7 @@ export namespace Prisma {
     AND?: OrderWhereInput | OrderWhereInput[]
     OR?: OrderWhereInput[]
     NOT?: OrderWhereInput | OrderWhereInput[]
+    status?: StringFilter<"Order"> | string
     productId?: StringFilter<"Order"> | string
     createdAt?: DateTimeFilter<"Order"> | Date | string
     client?: XOR<ClientScalarRelationFilter, ClientWhereInput>
@@ -6074,6 +6061,7 @@ export namespace Prisma {
   export type OrderOrderByWithAggregationInput = {
     id?: SortOrder
     stripeIntentId?: SortOrder
+    status?: SortOrder
     clientId?: SortOrder
     productId?: SortOrder
     createdAt?: SortOrder
@@ -6088,6 +6076,7 @@ export namespace Prisma {
     NOT?: OrderScalarWhereWithAggregatesInput | OrderScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"Order"> | string
     stripeIntentId?: StringWithAggregatesFilter<"Order"> | string
+    status?: StringWithAggregatesFilter<"Order"> | string
     clientId?: StringWithAggregatesFilter<"Order"> | string
     productId?: StringWithAggregatesFilter<"Order"> | string
     createdAt?: DateTimeWithAggregatesFilter<"Order"> | Date | string
@@ -6259,9 +6248,7 @@ export namespace Prisma {
     name: string
     email: string
     cpf: string
-    stripeMethodId: string
-    method: string
-    status: string
+    method?: string | null
     createdAt?: Date | string
     Order?: OrderCreateNestedOneWithoutClientInput
   }
@@ -6271,9 +6258,7 @@ export namespace Prisma {
     name: string
     email: string
     cpf: string
-    stripeMethodId: string
-    method: string
-    status: string
+    method?: string | null
     createdAt?: Date | string
     Order?: OrderUncheckedCreateNestedOneWithoutClientInput
   }
@@ -6283,9 +6268,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     cpf?: StringFieldUpdateOperationsInput | string
-    stripeMethodId?: StringFieldUpdateOperationsInput | string
-    method?: StringFieldUpdateOperationsInput | string
-    status?: StringFieldUpdateOperationsInput | string
+    method?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     Order?: OrderUpdateOneWithoutClientNestedInput
   }
@@ -6295,9 +6278,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     cpf?: StringFieldUpdateOperationsInput | string
-    stripeMethodId?: StringFieldUpdateOperationsInput | string
-    method?: StringFieldUpdateOperationsInput | string
-    status?: StringFieldUpdateOperationsInput | string
+    method?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     Order?: OrderUncheckedUpdateOneWithoutClientNestedInput
   }
@@ -6307,9 +6288,7 @@ export namespace Prisma {
     name: string
     email: string
     cpf: string
-    stripeMethodId: string
-    method: string
-    status: string
+    method?: string | null
     createdAt?: Date | string
   }
 
@@ -6318,9 +6297,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     cpf?: StringFieldUpdateOperationsInput | string
-    stripeMethodId?: StringFieldUpdateOperationsInput | string
-    method?: StringFieldUpdateOperationsInput | string
-    status?: StringFieldUpdateOperationsInput | string
+    method?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -6329,15 +6306,14 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     cpf?: StringFieldUpdateOperationsInput | string
-    stripeMethodId?: StringFieldUpdateOperationsInput | string
-    method?: StringFieldUpdateOperationsInput | string
-    status?: StringFieldUpdateOperationsInput | string
+    method?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type OrderCreateInput = {
     id?: string
     stripeIntentId: string
+    status: string
     createdAt?: Date | string
     client: ClientCreateNestedOneWithoutOrderInput
     product: ProductCreateNestedOneWithoutOrderInput
@@ -6346,6 +6322,7 @@ export namespace Prisma {
   export type OrderUncheckedCreateInput = {
     id?: string
     stripeIntentId: string
+    status: string
     clientId: string
     productId: string
     createdAt?: Date | string
@@ -6354,6 +6331,7 @@ export namespace Prisma {
   export type OrderUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     stripeIntentId?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     client?: ClientUpdateOneRequiredWithoutOrderNestedInput
     product?: ProductUpdateOneRequiredWithoutOrderNestedInput
@@ -6362,6 +6340,7 @@ export namespace Prisma {
   export type OrderUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     stripeIntentId?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
     clientId?: StringFieldUpdateOperationsInput | string
     productId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -6370,6 +6349,7 @@ export namespace Prisma {
   export type OrderCreateManyInput = {
     id?: string
     stripeIntentId: string
+    status: string
     clientId: string
     productId: string
     createdAt?: Date | string
@@ -6378,12 +6358,14 @@ export namespace Prisma {
   export type OrderUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     stripeIntentId?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type OrderUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     stripeIntentId?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
     clientId?: StringFieldUpdateOperationsInput | string
     productId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -6602,9 +6584,29 @@ export namespace Prisma {
     _max?: NestedIntFilter<$PrismaModel>
   }
 
+  export type StringNullableFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    mode?: QueryMode
+    not?: NestedStringNullableFilter<$PrismaModel> | string | null
+  }
+
   export type OrderNullableScalarRelationFilter = {
     is?: OrderWhereInput | null
     isNot?: OrderWhereInput | null
+  }
+
+  export type SortOrderInput = {
+    sort: SortOrder
+    nulls?: NullsOrder
   }
 
   export type ClientCountOrderByAggregateInput = {
@@ -6612,9 +6614,7 @@ export namespace Prisma {
     name?: SortOrder
     email?: SortOrder
     cpf?: SortOrder
-    stripeMethodId?: SortOrder
     method?: SortOrder
-    status?: SortOrder
     createdAt?: SortOrder
   }
 
@@ -6623,9 +6623,7 @@ export namespace Prisma {
     name?: SortOrder
     email?: SortOrder
     cpf?: SortOrder
-    stripeMethodId?: SortOrder
     method?: SortOrder
-    status?: SortOrder
     createdAt?: SortOrder
   }
 
@@ -6634,10 +6632,26 @@ export namespace Prisma {
     name?: SortOrder
     email?: SortOrder
     cpf?: SortOrder
-    stripeMethodId?: SortOrder
     method?: SortOrder
-    status?: SortOrder
     createdAt?: SortOrder
+  }
+
+  export type StringNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    mode?: QueryMode
+    not?: NestedStringNullableWithAggregatesFilter<$PrismaModel> | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedStringNullableFilter<$PrismaModel>
+    _max?: NestedStringNullableFilter<$PrismaModel>
   }
 
   export type ClientScalarRelationFilter = {
@@ -6653,6 +6667,7 @@ export namespace Prisma {
   export type OrderCountOrderByAggregateInput = {
     id?: SortOrder
     stripeIntentId?: SortOrder
+    status?: SortOrder
     clientId?: SortOrder
     productId?: SortOrder
     createdAt?: SortOrder
@@ -6661,6 +6676,7 @@ export namespace Prisma {
   export type OrderMaxOrderByAggregateInput = {
     id?: SortOrder
     stripeIntentId?: SortOrder
+    status?: SortOrder
     clientId?: SortOrder
     productId?: SortOrder
     createdAt?: SortOrder
@@ -6669,6 +6685,7 @@ export namespace Prisma {
   export type OrderMinOrderByAggregateInput = {
     id?: SortOrder
     stripeIntentId?: SortOrder
+    status?: SortOrder
     clientId?: SortOrder
     productId?: SortOrder
     createdAt?: SortOrder
@@ -6806,6 +6823,10 @@ export namespace Prisma {
     create?: XOR<OrderCreateWithoutClientInput, OrderUncheckedCreateWithoutClientInput>
     connectOrCreate?: OrderCreateOrConnectWithoutClientInput
     connect?: OrderWhereUniqueInput
+  }
+
+  export type NullableStringFieldUpdateOperationsInput = {
+    set?: string | null
   }
 
   export type OrderUpdateOneWithoutClientNestedInput = {
@@ -6977,6 +6998,48 @@ export namespace Prisma {
     not?: NestedFloatFilter<$PrismaModel> | number
   }
 
+  export type NestedStringNullableFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    not?: NestedStringNullableFilter<$PrismaModel> | string | null
+  }
+
+  export type NestedStringNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    not?: NestedStringNullableWithAggregatesFilter<$PrismaModel> | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedStringNullableFilter<$PrismaModel>
+    _max?: NestedStringNullableFilter<$PrismaModel>
+  }
+
+  export type NestedIntNullableFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableFilter<$PrismaModel> | number | null
+  }
+
   export type ProductCreateWithoutAdminInput = {
     id?: string
     title: string
@@ -7045,6 +7108,7 @@ export namespace Prisma {
   export type OrderCreateWithoutProductInput = {
     id?: string
     stripeIntentId: string
+    status: string
     createdAt?: Date | string
     client: ClientCreateNestedOneWithoutOrderInput
   }
@@ -7052,6 +7116,7 @@ export namespace Prisma {
   export type OrderUncheckedCreateWithoutProductInput = {
     id?: string
     stripeIntentId: string
+    status: string
     clientId: string
     createdAt?: Date | string
   }
@@ -7113,6 +7178,7 @@ export namespace Prisma {
     NOT?: OrderScalarWhereInput | OrderScalarWhereInput[]
     id?: StringFilter<"Order"> | string
     stripeIntentId?: StringFilter<"Order"> | string
+    status?: StringFilter<"Order"> | string
     clientId?: StringFilter<"Order"> | string
     productId?: StringFilter<"Order"> | string
     createdAt?: DateTimeFilter<"Order"> | Date | string
@@ -7152,6 +7218,7 @@ export namespace Prisma {
   export type OrderCreateWithoutClientInput = {
     id?: string
     stripeIntentId: string
+    status: string
     createdAt?: Date | string
     product: ProductCreateNestedOneWithoutOrderInput
   }
@@ -7159,6 +7226,7 @@ export namespace Prisma {
   export type OrderUncheckedCreateWithoutClientInput = {
     id?: string
     stripeIntentId: string
+    status: string
     productId: string
     createdAt?: Date | string
   }
@@ -7182,6 +7250,7 @@ export namespace Prisma {
   export type OrderUpdateWithoutClientInput = {
     id?: StringFieldUpdateOperationsInput | string
     stripeIntentId?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     product?: ProductUpdateOneRequiredWithoutOrderNestedInput
   }
@@ -7189,6 +7258,7 @@ export namespace Prisma {
   export type OrderUncheckedUpdateWithoutClientInput = {
     id?: StringFieldUpdateOperationsInput | string
     stripeIntentId?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
     productId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -7198,9 +7268,7 @@ export namespace Prisma {
     name: string
     email: string
     cpf: string
-    stripeMethodId: string
-    method: string
-    status: string
+    method?: string | null
     createdAt?: Date | string
   }
 
@@ -7209,9 +7277,7 @@ export namespace Prisma {
     name: string
     email: string
     cpf: string
-    stripeMethodId: string
-    method: string
-    status: string
+    method?: string | null
     createdAt?: Date | string
   }
 
@@ -7265,9 +7331,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     cpf?: StringFieldUpdateOperationsInput | string
-    stripeMethodId?: StringFieldUpdateOperationsInput | string
-    method?: StringFieldUpdateOperationsInput | string
-    status?: StringFieldUpdateOperationsInput | string
+    method?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -7276,9 +7340,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     cpf?: StringFieldUpdateOperationsInput | string
-    stripeMethodId?: StringFieldUpdateOperationsInput | string
-    method?: StringFieldUpdateOperationsInput | string
-    status?: StringFieldUpdateOperationsInput | string
+    method?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -7366,6 +7428,7 @@ export namespace Prisma {
   export type OrderCreateManyProductInput = {
     id?: string
     stripeIntentId: string
+    status: string
     clientId: string
     createdAt?: Date | string
   }
@@ -7373,6 +7436,7 @@ export namespace Prisma {
   export type OrderUpdateWithoutProductInput = {
     id?: StringFieldUpdateOperationsInput | string
     stripeIntentId?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     client?: ClientUpdateOneRequiredWithoutOrderNestedInput
   }
@@ -7380,6 +7444,7 @@ export namespace Prisma {
   export type OrderUncheckedUpdateWithoutProductInput = {
     id?: StringFieldUpdateOperationsInput | string
     stripeIntentId?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
     clientId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -7387,6 +7452,7 @@ export namespace Prisma {
   export type OrderUncheckedUpdateManyWithoutProductInput = {
     id?: StringFieldUpdateOperationsInput | string
     stripeIntentId?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
     clientId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }

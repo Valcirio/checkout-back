@@ -10,6 +10,9 @@ import { FastifyReply, FastifyRequest } from "fastify";
 import { STATUS_CODE } from "@/types/httpStatus";
 import { TParams } from "@/validators/params";
 import { TAdminToken } from "@/validators/admin";
+import { deleteImageOnS3, uploadImageToS3 } from "@/services/s3bucket";
+import { convertBase64ToBuffer } from "@/functions/imageConverter";
+import { v4 as uuidv4 } from 'uuid';
 
 export async function FindProducts
 (
@@ -50,13 +53,27 @@ export async function CreateProduct
     req: FastifyRequest<{ Body: TRegisterProduct }>,
     reply: FastifyReply
 ) {
+
+    const image = convertBase64ToBuffer(req.body.picture)
+
+    if(!image){
+        return reply.status(STATUS_CODE.BadRequest).send({message: 'Imagem não suportada.'})
+    }
+
+    const bucketLink = await uploadImageToS3({
+        bucketName: 'checkout-prod-img',
+        fileName: uuidv4(),
+        imageBuffer: image.buffer,
+        contentType: image.contentType  
+    })
+
     const user = req.user as TAdminToken
     const resultDB = await prisma.product.create({
         data: {
             title: req.body.title,
             description: req.body.description,
             price: req.body.price,
-            picture: req.body.picture,
+            picture: bucketLink,
             quantity: req.body.quantity,
             admin: {
                 connect: { 
@@ -66,7 +83,7 @@ export async function CreateProduct
         }
     })
 
-        if(!resultDB){
+    if(!resultDB){
         return reply.status(STATUS_CODE.BadRequest).send({message: 'Erro ao tentar criar produto.'})
     }
 
@@ -80,6 +97,35 @@ export async function UpdateProduct
 ) {
 
     try {
+
+        if(req.body.picture){
+            const pictureLink = await prisma.product.findUnique({
+                where: {
+                    id: req.body.id
+                },
+                select: {
+                    picture: true
+                }
+            })
+            const image = convertBase64ToBuffer(req.body.picture)
+
+            if(!image){
+                return reply.status(STATUS_CODE.BadRequest).send({message: 'Imagem não suportada.'})
+            }
+
+            if(pictureLink?.picture){
+                await uploadImageToS3({
+                    bucketName: 'checkout-prod-img',
+                    fileName: pictureLink.picture.split('/')[pictureLink.picture.split('/').length - 1],
+                    imageBuffer: image.buffer,
+                    contentType: image.contentType  
+                })
+            } else {
+                return reply.status(STATUS_CODE.BadRequest).send({message: 'Ocorreu um erro ao tentar atualizar a imagem.'})
+            }
+            
+        }
+
         await prisma.product.update({
             where: {
                 id: req.body.id
@@ -88,15 +134,14 @@ export async function UpdateProduct
                 title: req.body.title,
                 description: req.body.description,
                 price: req.body.price,
-                picture: req.body.picture,
                 quantity: req.body.quantity
             }
         })
 
         return reply.status(STATUS_CODE.OK).send({message:'Produto atualizado com sucesso!'})
 
-    } catch {
-        return reply.status(STATUS_CODE.BadRequest).send({message: 'Erro ao tentar atualizar produto.'})
+    } catch (error) {
+        return reply.status(STATUS_CODE.BadRequest).send({message: error instanceof Error ? error.message : 'Erro ao tentar atualizar produto.'})
     }
 }
 
@@ -106,11 +151,21 @@ export async function DeleteProduct
     reply: FastifyReply
 ) {
     try {
-        await prisma.product.delete({
+        const result = await prisma.product.delete({
             where: {
                 id: req.params.id
+            },
+            select: {
+                picture: true
             }
         })
+
+        if(result.picture){
+            await deleteImageOnS3({
+                bucketName: 'checkout-prod-img',
+                fileName: result.picture.split('/')[result.picture.split('/').length - 1]
+            })
+        }
 
         return reply.status(STATUS_CODE.OK).send({message:'Produto deletado com sucesso!'})
 

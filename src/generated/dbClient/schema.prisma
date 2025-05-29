@@ -46,13 +46,11 @@ model Product {
 }
 
 model Client {
-  id             String @id @default(uuid(7))
-  name           String
-  email          String
-  cpf            String @db.VarChar(11)
-  stripeMethodId String @unique
-  method         String
-  status         String
+  id     String  @id @default(uuid(7))
+  name   String
+  email  String
+  cpf    String  @db.VarChar(11)
+  method String?
 
   Order Order?
 
@@ -62,6 +60,7 @@ model Client {
 model Order {
   id             String @id @default(uuid(7))
   stripeIntentId String @unique
+  status         String
 
   client   Client @relation(fields: [clientId], references: [id])
   clientId String @unique

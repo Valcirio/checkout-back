@@ -4,7 +4,6 @@ import { serializerCompiler, validatorCompiler, ZodTypeProvider } from 'fastify-
 // Fastify Plugins
 import { fastifyCors } from '@fastify/cors'
 import { fastifyJwt } from '@fastify/jwt'
-import fastifyMultipart from '@fastify/multipart'
 
 // Routes
 import adminRoutes from './routes/admin'

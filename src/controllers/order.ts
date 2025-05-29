@@ -35,29 +35,12 @@ export async function CreateOrder
         throw Error('DB Error.')
     }
 
-    const paymentMethod = await stripe.paymentMethods.create({
-    type: 'card',
-    card: {
-        cvc: req.body.cvc,
-        exp_month: parseInt(req.body.expDate.substring(0,2)),
-        exp_year: parseInt(req.body.expDate.substring(2,6)),
-        number: req.body.cardNumber
-    },
-    billing_details: {
-        name: 'John Doe',
-    }},
-    {
-        apiVersion: '2025-04-30.basil'
-    });
-
-    if(!paymentMethod){
-        throw new Error('Payment Error')
-    }
-
     const intent: Stripe.Response<Stripe.PaymentIntent> = await stripe.paymentIntents.create({
         amount: Math.round(Number(resultDbProduct.price)* 100),
         currency: 'brl',
-        payment_method: paymentMethod.id
+        automatic_payment_methods: {
+            enabled: true
+        }
     })
 
         if(!intent){
@@ -69,11 +52,9 @@ export async function CreateOrder
             name: req.body.name,
             email: req.body.email,
             cpf: req.body.cpf,
-            stripeMethodId: paymentMethod.id,
-            method: 'card',
-            status: intent.status,
             Order: {
                 create: {
+                    status: intent.status,
                     stripeIntentId: intent.id,
                     productId: req.body.productId
                 }
@@ -82,6 +63,7 @@ export async function CreateOrder
     })
 
     } catch(err) {
+         console.log(err)
         return reply.status(STATUS_CODE.BadRequest).send({message:'Erro ao criar o pedido.'})
     }
 

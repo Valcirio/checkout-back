@@ -147,15 +147,14 @@ exports.Prisma.ClientScalarFieldEnum = {
   name: 'name',
   email: 'email',
   cpf: 'cpf',
-  stripeMethodId: 'stripeMethodId',
   method: 'method',
-  status: 'status',
   createdAt: 'createdAt'
 };
 
 exports.Prisma.OrderScalarFieldEnum = {
   id: 'id',
   stripeIntentId: 'stripeIntentId',
+  status: 'status',
   clientId: 'clientId',
   productId: 'productId',
   createdAt: 'createdAt'
@@ -169,6 +168,11 @@ exports.Prisma.SortOrder = {
 exports.Prisma.QueryMode = {
   default: 'default',
   insensitive: 'insensitive'
+};
+
+exports.Prisma.NullsOrder = {
+  first: 'first',
+  last: 'last'
 };
 
 

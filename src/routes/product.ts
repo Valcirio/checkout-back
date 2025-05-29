@@ -126,7 +126,7 @@ app.put('',
                     },
                 })
             }
-            console.log(error)
+
             return reply.status(error.statusCode ? error.statusCode : 500)
             .send({message: GenericMessages(error.statusCode as STATUS_CODE) })
         },

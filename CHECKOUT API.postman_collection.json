@@ -452,6 +452,118 @@
 						"description": "Captura de todos os pedidos de acordo com o Vendedor que fez a requisição, requer autenticação."
 					},
 					"response": []
+				},
+				{
+					"name": "CREATE ORDER",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"productId\": \"\",\r\n    \"name\":\"\",\r\n    \"emai\": \"\",\r\n    \"cpf\": \"\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/order",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"order"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "CREATE ORDER",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"productId\": \"\",\r\n    \"name\":\"\",\r\n    \"emai\": \"\",\r\n    \"cpf\": \"\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{URL}}/order",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"order"
+									]
+								}
+							},
+							"_postman_previewlanguage": "",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "CREATE ORDER",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"productId\": \"\",\r\n    \"name\":\"\",\r\n    \"emai\": \"\",\r\n    \"cpf\": \"\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/order",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"order"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "CREATE ORDER",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"productId\": \"\",\r\n    \"name\":\"\",\r\n    \"emai\": \"\",\r\n    \"cpf\": \"\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{URL}}/order",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"order"
+									]
+								}
+							},
+							"_postman_previewlanguage": "",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						}
+					]
 				}
 			],
 			"description": "Endpoints dos Pedidos: Criação (Privado), Busca de pedido (Público/Privado), Busca de produto por ID (Público/Privado).",
