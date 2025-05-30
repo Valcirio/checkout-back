@@ -1,21 +1,19 @@
-import bcrypt from 'bcryptjs'
+// Controllers
+import { LoginAdmin } from '@/controllers/auth';
 
 // Utils
-import { prisma } from '@/utils/prisma'
-import { GenericMessages } from '@/utils/genericErrorMsg';
+import { GenericMessages } from '@/functions/genericErrorMsg';
 
 // Validators
 import { ZLoginAdmin } from "@/validators/admin";
-import { hasZodFastifySchemaValidationErrors, isResponseSerializationError } from 'fastify-type-provider-zod';
+import { hasZodFastifySchemaValidationErrors } from 'fastify-type-provider-zod';
 
 // Types
-import { FastifyZodInstance } from "@/types/zod";
+import { FastifyInstance } from 'fastify';
 import { STATUS_CODE } from "@/types/httpStatus";
-import { TIME_STAMP } from '@/types/magicNumbers';
 
-export async function authRouter(app: FastifyZodInstance){
-
-    app.post('/singup', {
+export default async function authRouter(app: FastifyInstance){
+    app.post('/login', {
         schema: {
             body: ZLoginAdmin
         },
@@ -41,32 +39,5 @@ export async function authRouter(app: FastifyZodInstance){
             return reply.status(error.statusCode ? error.statusCode : 500)
             .send({message: GenericMessages(error.statusCode as STATUS_CODE) })
         }
-    },
-    async (req, reply)=>{
-        console.log(req.body)
-        const result = await prisma.admin.findUnique({
-            where:{
-                email: req.body.email
-            }
-        })
-
-        if(!result){
-            return reply.status(STATUS_CODE.BadRequest).send({message: 'E-mail e(ou) senha do usuário estão incorretas.'})
-        }
-        
-        if(await bcrypt.compare(req.body.password, result.password) === false){
-            return reply.status(STATUS_CODE.BadRequest).send({message: 'E-mail e(ou) senha do usuário estão incorretas.'})
-        }
-
-        const token = app.jwt.sign(
-            { 
-                id: result.id, 
-                name: result.name
-            },
-            { 
-                expiresIn: Date.now() + (TIME_STAMP.OneDay*3) 
-            }
-        )
-        return reply.status(STATUS_CODE.OK).send({ message:'usuário logado com sucesso!', access_token: token })
-    })
+    }, LoginAdmin )
 }

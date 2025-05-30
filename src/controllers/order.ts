@@ -1,7 +1,5 @@
-import bcrypt from 'bcryptjs'
-
 // Utils
-import { hash } from "@/utils/hash";
+import { hash } from "@/functions/hash";
 import { prisma } from '@/utils/prisma'
 
 // Validators
@@ -17,22 +15,25 @@ import Stripe from 'stripe';
 
 export async function CreateOrder
 (
-    req: FastifyRequest<{ Body: TRegisterOrder }>,
+    req: FastifyRequest<{ Params: TParams }>,
     reply: FastifyReply
 ) {
     try {
 
     const resultDbProduct = await prisma.product.findFirst({
         where: {
-            id: req.body.productId
+            id: req.params.id
         },
-        select: {
-            price: true
+        omit: {
+            id: true,
+            adminId: true,
+            createdAt: true,
+            updatedAt: true
         }
     })
 
     if(!resultDbProduct){
-        throw Error('DB Error.')
+        throw Error('Erro ao buscar o produto.')
     }
 
     const intent: Stripe.Response<Stripe.PaymentIntent> = await stripe.paymentIntents.create({
@@ -47,27 +48,14 @@ export async function CreateOrder
         throw new Error('Intent error.')
     }
 
-    const resultDB = await prisma.client.create({
-        data: {
-            name: req.body.name,
-            email: req.body.email,
-            cpf: req.body.cpf,
-            Order: {
-                create: {
-                    status: intent.status,
-                    stripeIntentId: intent.id,
-                    productId: req.body.productId
-                }
-            }
-        }
-    })
+    return reply.status(STATUS_CODE.Created)
+    .send({message:'Pedido criado com sucesso!', secret: intent.client_secret, product: resultDbProduct})
 
     } catch(err) {
-         console.log(err)
+        console.log(err)
         return reply.status(STATUS_CODE.BadRequest).send({message:'Erro ao criar o pedido.'})
     }
 
-    return reply.status(STATUS_CODE.Created).send({message:'Pedido criado com sucesso!'})
 }
 
 export async function FindOrders
@@ -95,21 +83,76 @@ export async function FindOrderById
     req: FastifyRequest<{ Params: TParams }>,
     reply: FastifyReply
 ) {
-    const user = req.user as TAdminToken
-    const resultDB = await prisma.order.findMany({
+    const result = await prisma.order.findUnique({
         where: {
             id: req.params.id
+        },
+        omit: {
+            id: true,
+            stripeIntentId: true,
         }
     })
 
-    if(!resultDB){
-        return reply.status(STATUS_CODE.Created).send({message:'Pedido encontrado!'})
+    if(!result){
+        return reply.status(STATUS_CODE.NotFound).send({message:'Pedido não encontrado.'})
     }
 
     return reply.status(STATUS_CODE.OK)
-    .send({message:'Pedido encontrado!', 
-        data: {
-
-        }
-    })
+    .send({message:'Pedido encontrado!', result })
 }
+
+// export async function CreateOrder
+// (
+//     req: FastifyRequest<{ Body: TRegisterOrder }>,
+//     reply: FastifyReply
+// ) {
+//     try {
+
+//     const resultDbProduct = await prisma.product.findFirst({
+//         where: {
+//             id: req.body.productId
+//         },
+//         select: {
+//             price: true
+//         }
+//     })
+
+//     if(!resultDbProduct){
+//         throw Error('Erro ao buscar o produto.')
+//     }
+
+//     const intent: Stripe.Response<Stripe.PaymentIntent> = await stripe.paymentIntents.create({
+//         amount: Math.round(Number(resultDbProduct.price)* 100),
+//         currency: 'brl',
+//         automatic_payment_methods: {
+//             enabled: true
+//         }
+//     })
+
+//         if(!intent){
+//         throw new Error('Intent error.')
+//     }
+
+//     await prisma.client.create({
+//         data: {
+//             name: req.body.name,
+//             email: req.body.email,
+//             cpf: req.body.cpf,
+//             Order: {
+//                 create: {
+//                     status: intent.status,
+//                     stripeIntentId: intent.id,
+//                     productId: req.body.productId
+//                 }
+//             }
+//         }
+//     })
+
+//     return reply.status(STATUS_CODE.Created).send({message:'Pedido criado com sucesso!', secret: intent.client_secret})
+
+//     } catch(err) {
+//         console.log(err)
+//         return reply.status(STATUS_CODE.BadRequest).send({message:'Erro ao criar o pedido.'})
+//     }
+
+// }

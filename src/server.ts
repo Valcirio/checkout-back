@@ -5,17 +5,22 @@ import { serializerCompiler, validatorCompiler, ZodTypeProvider } from 'fastify-
 import { fastifyCors } from '@fastify/cors'
 import { fastifyJwt } from '@fastify/jwt'
 
+// Utils
+import { pinoOptions } from './utils/pino'
+
 // Routes
 import adminRoutes from './routes/admin'
 import productRoutes from './routes/product'
-import { authRouter } from './routes/auth'
+import authRouter from './routes/auth'
 import orderRoutes from './routes/order'
 
 class CheckoutApp {
     public server: FastifyInstance
 
     constructor () {
-        this.server = Fastify().withTypeProvider<ZodTypeProvider>()
+        this.server = Fastify({
+            logger: process.env.NODE_ENV === 'development' ? pinoOptions : true
+        }).withTypeProvider<ZodTypeProvider>()
         this.middleware()
         this.setZodCompiler()
         this.setRoutes()
@@ -42,10 +47,10 @@ class CheckoutApp {
     public initialize(){
         this.server.listen({port: 3333}, (err, address) => {
             if (err) {
-              console.error(err)
+              this.server.log.error(err)
               process.exit(1)
             }
-            console.log(`Server listening at ${address}`)
+            this.server.log.info(`Server listening at ${address}`)
         })
     }
 }

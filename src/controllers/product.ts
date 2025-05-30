@@ -1,18 +1,24 @@
+import { v4 as uuidv4 } from 'uuid';
+
 // Utils
-import { hash } from "@/utils/hash";
 import { prisma } from '@/utils/prisma'
 
 // Validatiors
 import { TRegisterProduct, TUpdateProduct } from "@/validators/product";
+
+// Functions
+import { convertBase64ToBuffer } from "@/functions/imageConverter";
+
+// Services
+import { deleteImageOnS3, uploadImageToS3 } from "@/services/s3Bucket";
 
 // Types
 import { FastifyReply, FastifyRequest } from "fastify";
 import { STATUS_CODE } from "@/types/httpStatus";
 import { TParams } from "@/validators/params";
 import { TAdminToken } from "@/validators/admin";
-import { deleteImageOnS3, uploadImageToS3 } from "@/services/s3bucket";
-import { convertBase64ToBuffer } from "@/functions/imageConverter";
-import { v4 as uuidv4 } from 'uuid';
+import { PrismaClientInitializationError, PrismaClientKnownRequestError } from "@/generated/dbClient/runtime/library";
+import { PrismaError } from '@/functions/genericErrorMsg';
 
 export async function FindProducts
 (
@@ -30,6 +36,17 @@ export async function FindProducts
 
 }
 
+export async function FindAllProducts
+(
+    req: FastifyRequest,
+    reply: FastifyReply
+) {
+    const user = req.user as TAdminToken
+    const result = await prisma.product.findMany()
+    return reply.status(STATUS_CODE.OK)
+    .send({ message: result.length ? 'Produtos encontrados!' : 'Ainda não há produtos cadastrados.', products: result })
+}
+
 export async function FindProductById
 (
     req: FastifyRequest<{ Params: TParams }>,
@@ -45,7 +62,7 @@ export async function FindProductById
         return reply.status(STATUS_CODE.NotFound).send({ message: 'Produto não encontrado.' })
     }
 
-    return reply.status(STATUS_CODE.OK).send({ message:'Produto encontrado!', data: result })
+    return reply.status(STATUS_CODE.OK).send({ message:'Produto encontrado!', product: result })
 }
 
 export async function CreateProduct
@@ -169,7 +186,8 @@ export async function DeleteProduct
 
         return reply.status(STATUS_CODE.OK).send({message:'Produto deletado com sucesso!'})
 
-    } catch {
+    } catch (error) {
+        reply.log.error(PrismaError(error))
         return reply.status(STATUS_CODE.BadRequest).send({message: 'Erro ao tentar deletar produto.'})
     }
 }

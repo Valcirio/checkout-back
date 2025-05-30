@@ -1,5 +1,5 @@
 // Utils
-import { hash } from "@/utils/hash";
+import { hash } from "@/functions/hash";
 import { prisma } from '@/utils/prisma'
 
 // Validatiors

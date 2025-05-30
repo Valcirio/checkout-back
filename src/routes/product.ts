@@ -1,8 +1,8 @@
 // Controllers
-import { CreateProduct, DeleteProduct, FindProductById, FindProducts, UpdateProduct } from "@/controllers/product";
+import { CreateProduct, DeleteProduct, FindAllProducts, FindProductById, FindProducts, UpdateProduct } from "@/controllers/product";
 
 // Utils
-import { GenericMessages } from "@/utils/genericErrorMsg";
+import { GenericMessages } from "@/functions/genericErrorMsg";
 
 // Validators
 import { ZRegisterProduct, ZUpdateProduct } from "@/validators/product";
@@ -11,10 +11,10 @@ import { hasZodFastifySchemaValidationErrors } from "fastify-type-provider-zod";
 
 // Types
 import { STATUS_CODE } from "@/types/httpStatus";
-import { FastifyZodInstance } from "@/types/zod";
+import { FastifyInstance } from "fastify";
 
-export default async function productRoutes(app: FastifyZodInstance) {
-    app.get('', {
+export default async function productRoutes(app: FastifyInstance) {
+    app.get('/admin', {
         onRequest: async (req, reply) => {
             try {
                 await req.jwtVerify()
@@ -27,6 +27,13 @@ export default async function productRoutes(app: FastifyZodInstance) {
             .send({message: GenericMessages(error.statusCode as STATUS_CODE) })
         },
     }, FindProducts)
+
+    app.get('', {
+        errorHandler(error, req, reply) {
+            return reply.status(error.statusCode ? error.statusCode : 500)
+            .send({message: GenericMessages(error.statusCode as STATUS_CODE) })
+        },
+    }, FindAllProducts)
 
     app.get('/:id', {
         onRequest: async (req, reply) => {
@@ -56,7 +63,7 @@ export default async function productRoutes(app: FastifyZodInstance) {
                     },
                 })
             }
-            
+            console.log(error, req.params)
             return reply.status(error.statusCode ? error.statusCode : 500)
             .send({message: GenericMessages(error.statusCode as STATUS_CODE) })
         },
@@ -93,7 +100,7 @@ export default async function productRoutes(app: FastifyZodInstance) {
             }
 
             return reply.status(error.statusCode ? error.statusCode : 500)
-            .send({message: GenericMessages(error.statusCode as STATUS_CODE) })
+            .send(new Error(GenericMessages(error.statusCode as STATUS_CODE)))
         },
     }, CreateProduct )
 

@@ -1,5 +1,5 @@
 import { DeleteObjectCommand, PutObjectCommand } from "@aws-sdk/client-s3";
-import { s3Client } from '@/utils/s3client'
+import { s3Client } from '@/utils/s3Client'
 
 type TDeleteImageToS3 = {
     bucketName: string;

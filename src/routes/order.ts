@@ -1,12 +1,19 @@
+// Controllers
 import { FindOrderById, FindOrders, CreateOrder } from "@/controllers/order";
-import { STATUS_CODE } from "@/types/httpStatus";
-import { FastifyZodInstance } from "@/types/zod";
-import { GenericMessages } from "@/utils/genericErrorMsg";
+
+// Functions
+import { GenericMessages } from "@/functions/genericErrorMsg";
+
+// Validators
 import { ZRegisterOrder } from "@/validators/order";
 import { ZParams } from "@/validators/params";
 
-export default async function orderRoutes(app: FastifyZodInstance) {
-    app.get('', {
+// Types
+import { STATUS_CODE } from "@/types/httpStatus";
+import { FastifyInstance } from "fastify";
+
+export default async function orderRoutes(app: FastifyInstance) {
+    app.get('/admin', {
         onRequest: async (req, reply) => {
             try {
                 await req.jwtVerify()
@@ -20,7 +27,7 @@ export default async function orderRoutes(app: FastifyZodInstance) {
         },
     }, FindOrders)
 
-    app.get('/:id', {
+    app.get('/admin/:id', {
         schema: {
             params: ZParams
         },
@@ -32,15 +39,16 @@ export default async function orderRoutes(app: FastifyZodInstance) {
             }
         },
         errorHandler(error, req, reply) {
+
             return reply.status(error.statusCode ? error.statusCode : 500)
             .send({message: GenericMessages(error.statusCode as STATUS_CODE ) })
         },
     }, FindOrderById)
 
-    app.post('',
+    app.get('/:id',
     {
         schema: {
-            body: ZRegisterOrder
+            params: ZParams 
         }
     }, CreateOrder)
 }

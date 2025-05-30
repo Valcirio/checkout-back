@@ -2,18 +2,19 @@
 import { CreateAdmin, FindAdminById } from "@/controllers/admin";
 
 // Utils
-import { GenericMessages } from "@/utils/genericErrorMsg";
+import { GenericMessages } from "@/functions/genericErrorMsg";
 
 // Validators
 import { ZRegisterAdmin } from "@/validators/admin";
-import { ZParams } from "@/validators/params";
 import { hasZodFastifySchemaValidationErrors } from "fastify-type-provider-zod";
 
 // Types
 import { STATUS_CODE } from "@/types/httpStatus";
-import { FastifyZodInstance } from "@/types/zod";
 
-export default async function adminRoutes(app: FastifyZodInstance) {
+// Types
+import { FastifyInstance } from "fastify";
+
+export default async function adminRoutes(app: FastifyInstance) {
     app.get('', {
         onRequest: async (req, reply) => {
             try {
