@@ -30,7 +30,7 @@ export async function UpdateOrderStatus(
         );
 
     const paymentIntent = event.data.object as Stripe.PaymentIntent;
-
+        paymentIntent.payment_method 
     await prisma.order.update({
         where: {
             stripeIntentId: paymentIntent.id

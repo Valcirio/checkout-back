@@ -6,14 +6,14 @@ import { GenericMessages } from "@/functions/genericErrorMsg";
 
 // Validators
 import { ZRegisterOrder } from "@/validators/order";
-import { ZParams } from "@/validators/params";
+import { ZQueryParams } from "@/validators/queries";
 
 // Types
 import { STATUS_CODE } from "@/types/httpStatus";
 import { FastifyInstance } from "fastify";
 
 export default async function orderRoutes(app: FastifyInstance) {
-    app.get('/admin', {
+    app.get('', {
         onRequest: async (req, reply) => {
             try {
                 await req.jwtVerify()
@@ -27,9 +27,9 @@ export default async function orderRoutes(app: FastifyInstance) {
         },
     }, FindOrders)
 
-    app.get('/admin/:id', {
+    app.get('/:id', {
         schema: {
-            params: ZParams
+            params: ZQueryParams
         },
         onRequest: async (req, reply) => {
             try {

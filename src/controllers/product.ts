@@ -66,6 +66,26 @@ export async function FindProductById
     return reply.status(STATUS_CODE.OK).send({ message:'Produto encontrado!', product: result })
 }
 
+export async function FindAdminProductById
+(
+    req: FastifyRequest<{ Params: TParams }>,
+    reply: FastifyReply
+) {
+    const user = req.user as TAdminToken
+    const result = await prisma.product.findUnique({
+        where: {
+            id: req.params.id,
+            adminId: user.id
+        }
+    })
+
+    if(!result) {
+        return reply.status(STATUS_CODE.NotFound).send({ message: 'Produto não encontrado.' })
+    }
+
+    return reply.status(STATUS_CODE.OK).send({ message:'Produto encontrado!', product: result })
+}
+
 export async function CreateProduct
 (
     req: FastifyRequest<{ Body: TRegisterProduct }>,

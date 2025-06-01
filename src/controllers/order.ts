@@ -5,6 +5,7 @@ import { stripe } from '@/utils/stripe';
 // Validators
 import { TRegisterOrder } from "@/validators/order";
 import { TParams } from '@/validators/params';
+import { TQueryParams } from '@/validators/queries';
 import { TAdminToken } from '@/validators/admin';
 
 // Types
@@ -75,13 +76,30 @@ export async function CreateOrder
 
 export async function FindOrders
 (
-    req: FastifyRequest,
+    req: FastifyRequest<{ Querystring: TQueryParams }>,
     reply: FastifyReply
 ) {
     const user = req.user as TAdminToken
     const resultDB = await prisma.order.findMany({
+        take: 5,
+        skip: 0,
         where: {
-            id: user.id
+            product: {
+                adminId: user.id
+            }
+        },
+        include: {
+            product: {
+                select: {
+                    title: true,
+                    price: true
+                }
+            },
+            client: {
+                select: {
+                    name: true,
+                }
+            }
         }
     })
 

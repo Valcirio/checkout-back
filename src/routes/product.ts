@@ -1,5 +1,13 @@
 // Controllers
-import { CreateProduct, DeleteProduct, FindAllProducts, FindProductById, FindProducts, UpdateProduct } from "@/controllers/product";
+import { 
+    CreateProduct, 
+    DeleteProduct, 
+    FindAdminProductById, 
+    FindAllProducts, 
+    FindProductById, 
+    FindProducts, 
+    UpdateProduct 
+} from "@/controllers/product";
 
 // Utils
 import { GenericMessages } from "@/functions/genericErrorMsg";
@@ -34,6 +42,39 @@ export default async function productRoutes(app: FastifyInstance) {
             .send({message: GenericMessages(error.statusCode as STATUS_CODE) })
         },
     }, FindAllProducts)
+
+    app.get('admin/:id', {
+        schema: {
+            params: ZParams
+        },
+        onRequest: async (req, reply) => {
+            try {
+                await req.jwtVerify()
+            } catch(err) {
+                return reply.status(STATUS_CODE.Unauthorized).send({message: 'Usuário não autorizado.'})
+            }
+        },
+        errorHandler(error, req, reply) {
+            if (hasZodFastifySchemaValidationErrors(error)) {
+                return reply.status(STATUS_CODE.BadRequest).send({
+                    message: 'Erro de validação.',
+                    details: {
+                        issues: error.validation.map((el)=>{
+                            return {
+                                issue: el.params.issue.path,
+                                code: el.params.issue.code,
+                                message: el.params.issue.message
+                            }
+                        }),
+                        method: req.method,
+                        url: req.url,
+                    },
+                })
+            }
+            return reply.status(error.statusCode ? error.statusCode : 500)
+            .send({message: GenericMessages(error.statusCode as STATUS_CODE) })
+        },
+    }, FindAdminProductById)
 
     app.get('/:id', {
         schema: {
