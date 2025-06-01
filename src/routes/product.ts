@@ -36,13 +36,6 @@ export default async function productRoutes(app: FastifyInstance) {
     }, FindAllProducts)
 
     app.get('/:id', {
-        onRequest: async (req, reply) => {
-            try {
-                await req.jwtVerify()
-            } catch(err) {
-                return reply.status(STATUS_CODE.Unauthorized).send({message: 'Usuário não autorizado.'})
-            }
-        },
         schema: {
             params: ZParams
         },
@@ -63,7 +56,6 @@ export default async function productRoutes(app: FastifyInstance) {
                     },
                 })
             }
-            console.log(error, req.params)
             return reply.status(error.statusCode ? error.statusCode : 500)
             .send({message: GenericMessages(error.statusCode as STATUS_CODE) })
         },

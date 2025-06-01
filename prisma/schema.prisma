@@ -46,11 +46,12 @@ model Product {
 }
 
 model Client {
-  id     String  @id @default(uuid(7))
-  name   String
-  email  String
-  cpf    String  @db.VarChar(11)
-  method String?
+  id      String  @id @default(uuid(7))
+  name    String
+  email   String
+  cpf     String  @db.VarChar(11)
+  address String
+  method  String?
 
   Order Order?
 

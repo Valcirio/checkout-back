@@ -1,28 +1,27 @@
 // Utils
-import { hash } from "@/functions/hash";
 import { prisma } from '@/utils/prisma'
+import { stripe } from '@/utils/stripe';
 
 // Validators
 import { TRegisterOrder } from "@/validators/order";
-
-// Types
-import { STATUS_CODE } from "@/types/httpStatus";
-import { FastifyReply, FastifyRequest } from "fastify";
 import { TParams } from '@/validators/params';
 import { TAdminToken } from '@/validators/admin';
-import { stripe } from '@/utils/stripe';
+
+// Types
+import { FastifyReply, FastifyRequest } from "fastify";
+import { STATUS_CODE } from "@/types/httpStatus";
 import Stripe from 'stripe';
 
 export async function CreateOrder
 (
-    req: FastifyRequest<{ Params: TParams }>,
+    req: FastifyRequest<{ Body: TRegisterOrder }>,
     reply: FastifyReply
 ) {
     try {
 
     const resultDbProduct = await prisma.product.findFirst({
         where: {
-            id: req.params.id
+            id: req.body.productId
         },
         omit: {
             id: true,
@@ -48,8 +47,24 @@ export async function CreateOrder
         throw new Error('Intent error.')
     }
 
+    await prisma.client.create({
+        data: {
+            name: req.body.name,
+            email: req.body.email,
+            cpf: req.body.cpf,
+            address: req.body.address,
+            Order: {
+                create: {
+                    status: intent.status,
+                    stripeIntentId: intent.id,
+                    productId: req.body.productId
+                }
+            }
+        }
+    })
+
     return reply.status(STATUS_CODE.Created)
-    .send({message:'Pedido criado com sucesso!', secret: intent.client_secret, product: resultDbProduct})
+    .send({message:'Pedido criado com sucesso!', secret: intent.client_secret })
 
     } catch(err) {
         console.log(err)

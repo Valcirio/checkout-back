@@ -1,5 +1,6 @@
 import Fastify, { FastifyInstance } from 'fastify'
 import { serializerCompiler, validatorCompiler, ZodTypeProvider } from 'fastify-type-provider-zod'
+import ngrok from '@ngrok/ngrok'
 
 // Fastify Plugins
 import { fastifyCors } from '@fastify/cors'
@@ -13,6 +14,7 @@ import adminRoutes from './routes/admin'
 import productRoutes from './routes/product'
 import authRouter from './routes/auth'
 import orderRoutes from './routes/order'
+import webhookRoute from './routes/webhook'
 
 class CheckoutApp {
     public server: FastifyInstance
@@ -41,6 +43,7 @@ class CheckoutApp {
         this.server.register(authRouter, { prefix: '/auth' })
         this.server.register(productRoutes, { prefix: '/product' })
         this.server.register(orderRoutes, {prefix: '/order'})
+        this.server.register(webhookRoute, {prefix: '/webhook'})
     }
 
 
@@ -57,3 +60,6 @@ class CheckoutApp {
 
 const app = new CheckoutApp()
 app.initialize()
+
+ngrok.connect({ addr: 3333, authtoken: process.env.NGROK_AUTHTOKEN, domain: 'poorly-cool-buck.ngrok-free.app' })
+.then(listener => console.log(`Ingress established at: ${listener.url()}`));

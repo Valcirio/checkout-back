@@ -4,7 +4,8 @@ import { z } from "zod";
 export const ZRegisterClient = z.object({
     name: z.string().nonempty('Nome do usuário é obrigatório.'),
     email: z.string().email('E-mail inválido.').nonempty(),
-    cpf: z.string().nonempty('Campo do CNPJ é obrigatório.').refine(el => cpf.isValid(el), {message: 'CPF Inválido.'}),
+    cpf: z.string().nonempty('Campo do CPF é obrigatório.').refine(el => cpf.isValid(el), {message: 'CPF Inválido.'}),
+    address: z.string().nonempty('Campo de endereço é obrigatório.')
 })
 
 export type TRegisterClient = z.infer<typeof ZRegisterClient>

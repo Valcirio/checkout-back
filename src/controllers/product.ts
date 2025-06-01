@@ -1,10 +1,15 @@
 import { v4 as uuidv4 } from 'uuid';
 
+// Functions
+import { PrismaError } from '@/functions/genericErrorMsg';
+
 // Utils
 import { prisma } from '@/utils/prisma'
 
 // Validatiors
 import { TRegisterProduct, TUpdateProduct } from "@/validators/product";
+import { TParams } from "@/validators/params";
+import { TAdminToken } from "@/validators/admin";
 
 // Functions
 import { convertBase64ToBuffer } from "@/functions/imageConverter";
@@ -15,10 +20,6 @@ import { deleteImageOnS3, uploadImageToS3 } from "@/services/s3Bucket";
 // Types
 import { FastifyReply, FastifyRequest } from "fastify";
 import { STATUS_CODE } from "@/types/httpStatus";
-import { TParams } from "@/validators/params";
-import { TAdminToken } from "@/validators/admin";
-import { PrismaClientInitializationError, PrismaClientKnownRequestError } from "@/generated/dbClient/runtime/library";
-import { PrismaError } from '@/functions/genericErrorMsg';
 
 export async function FindProducts
 (

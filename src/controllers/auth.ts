@@ -3,8 +3,10 @@ import bcrypt from 'bcryptjs'
 // Utils
 import { prisma } from '@/utils/prisma'
 
-// Types
+// Validators   
 import { TLoginAdmin } from '@/validators/admin'
+
+// Types
 import { FastifyReply, FastifyRequest } from 'fastify'
 import { STATUS_CODE } from '@/types/httpStatus'
 import { TIME_STAMP } from '@/types/magicNumbers'

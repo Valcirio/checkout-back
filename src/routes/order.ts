@@ -45,10 +45,10 @@ export default async function orderRoutes(app: FastifyInstance) {
         },
     }, FindOrderById)
 
-    app.get('/:id',
+    app.post('',
     {
         schema: {
-            params: ZParams 
+            body: ZRegisterOrder
         }
     }, CreateOrder)
 }
