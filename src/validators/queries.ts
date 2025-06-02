@@ -1,9 +1,46 @@
 import { z } from 'zod';
 
-const queryStringFormatRegex = /^q\?page=\d+&ordination=[a-zA-Z]+&desc=(true|false)$/
+enum EQueryTypes {
+  page = 'page',
+  ordination = 'ordination',
+  desc = 'desc'
+}
 
-export const ZQueryParams = z.object({
-  q: z.string().regex(queryStringFormatRegex, "O formato do filtro não é válido").optional(),
-});
+export const ZQueryParams = z.record(z.nativeEnum(EQueryTypes), z.string().superRefine((val, ctx) => {
+  console.log(val, ctx.path[0])
+  switch(ctx.path[0]) {
+    case EQueryTypes.page:
+      if (isNaN(Number(val))) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: 'O parâmetro de `page` deve ser um número.',
+        })
+      }
 
-export type TQueryParams = z.infer<typeof ZQueryParams>;
+      if (Number(val) < 1) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: 'O parâmetro de `page` deve ser maior que 0.',
+        })
+      }
+      break
+    case EQueryTypes.ordination:
+      if (val !== 'date' && val !== 'alpha' && val !== 'price') {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: 'O parâmetro de `ordination` deve ser `price`, `alpha` ou `date`',
+        })
+      }
+      break
+    case EQueryTypes.desc:
+      if (val !== 'true' && val !== 'false') {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: 'O parâmetro de `desc` deve ser `true` ou `false`',
+        })
+      }
+      break
+  }
+}).optional())
+
+export type TQueryParams = z.infer<typeof ZQueryParams>

@@ -59,9 +59,10 @@ model Client {
 }
 
 model Order {
-  id             String @id @default(uuid(7))
-  stripeIntentId String @unique
+  id             String  @id @default(uuid(7))
+  stripeIntentId String  @unique
   status         String
+  value          Decimal @db.Decimal(10, 2)
 
   client   Client @relation(fields: [clientId], references: [id])
   clientId String @unique

@@ -11,9 +11,14 @@ import { ZQueryParams } from "@/validators/queries";
 // Types
 import { STATUS_CODE } from "@/types/httpStatus";
 import { FastifyInstance } from "fastify";
+import { ZParams } from "@/validators/params";
+import { hasZodFastifySchemaValidationErrors } from "fastify-type-provider-zod";
 
 export default async function orderRoutes(app: FastifyInstance) {
     app.get('', {
+        schema: {
+            querystring: ZQueryParams
+        },
         onRequest: async (req, reply) => {
             try {
                 await req.jwtVerify()
@@ -22,6 +27,24 @@ export default async function orderRoutes(app: FastifyInstance) {
             }
         },
         errorHandler(error, req, reply) {
+            if (hasZodFastifySchemaValidationErrors(error)) {
+                return reply.status(STATUS_CODE.BadRequest).send({
+                    message: 'Erro de validação.',
+                    details: {
+                        issues: error.validation.map((el)=>{
+                            return {
+                                issue: el.params.issue.path,
+                                code: el.params.issue.code,
+                                message: el.params.issue.message
+                            }
+                        }),
+                        method: req.method,
+                        url: req.url,
+                    },
+                })
+            }
+
+            req.log.error(error)
             return reply.status(error.statusCode ? error.statusCode : 500)
             .send({message: GenericMessages(error.statusCode as STATUS_CODE ) })
         },
@@ -29,7 +52,7 @@ export default async function orderRoutes(app: FastifyInstance) {
 
     app.get('/:id', {
         schema: {
-            params: ZQueryParams
+            params: ZParams
         },
         onRequest: async (req, reply) => {
             try {
@@ -39,7 +62,6 @@ export default async function orderRoutes(app: FastifyInstance) {
             }
         },
         errorHandler(error, req, reply) {
-
             return reply.status(error.statusCode ? error.statusCode : 500)
             .send({message: GenericMessages(error.statusCode as STATUS_CODE ) })
         },

@@ -29,19 +29,30 @@ export async function UpdateOrderStatus(
             stripeWebhookSecret
         );
 
-    const paymentIntent = event.data.object as Stripe.PaymentIntent;
-        paymentIntent.payment_method 
-    await prisma.order.update({
-        where: {
-            stripeIntentId: paymentIntent.id
-        },
-        data: {
-            status: paymentIntent.status
-        }
-    });
+        const paymentIntent = event.data.object as Stripe.PaymentIntent;
 
-    return reply.status(STATUS_CODE.OK).send({message: 'Evento recebido e processado com sucesso.', eventId: event.id})
-} catch (err: any) {
-    return reply.status(STATUS_CODE.BadRequest).send({message: `Erro no webhook: ${err.message}`});
-}
+        if(paymentIntent.status === 'canceled'){
+            await prisma.product.update({
+                where: {
+                    id: paymentIntent.metadata.productId
+                },
+                data: {
+                    quantity: { increment: Number(paymentIntent.metadata.quantity) }
+                }
+            })
+        }
+
+        await prisma.order.update({
+            where: {
+                stripeIntentId: paymentIntent.id
+            },
+            data: {
+                status: paymentIntent.status
+            }
+        });
+
+        return reply.status(STATUS_CODE.OK).send({message: 'Evento recebido e processado com sucesso.', eventId: event.id})
+    } catch (err: any) {
+        return reply.status(STATUS_CODE.BadRequest).send({message: `Erro no webhook: ${err.message}`});
+    }
 }

@@ -33,8 +33,6 @@ export default async function webhookRoute(app: FastifyInstance) {
 
     app.post('', {
         errorHandler(error, req, reply) {
-            console.log(req.body)
-            console.log('error', error)
             return reply.status(error.statusCode ? error.statusCode : 500)
             .send({message: GenericMessages(error.statusCode as STATUS_CODE) })
         },
