@@ -29,7 +29,7 @@ class CheckoutApp {
     }
 
     private middleware() {
-        this.server.register(fastifyCors, { origin: '*' })
+        this.server.register(fastifyCors, { origin: '*', methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'] })
         this.server.register(fastifyJwt, {secret: process.env.JWT_PASS as string})
     }
 

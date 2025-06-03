@@ -8,7 +8,7 @@ type TInsideLiteralOrdination = {
     }
 }
 
-export function OrdinationLiterals(ordination: string | undefined, desc: string | undefined): TInsideLiteralOrdination {
+export function OrdinationOrderLiterals(ordination: string | undefined, desc: string | undefined): TInsideLiteralOrdination {
     const literals: TLiteralOrdination = {
         date: { createdAt: desc === 'true' ? 'desc' : 'asc' },
         alpha: { client: { name: desc === 'true' ? 'desc' : 'asc' } },
@@ -16,4 +16,14 @@ export function OrdinationLiterals(ordination: string | undefined, desc: string 
     }
 
     return ordination ? literals[ordination] : literals['date']
+}
+
+export function OrdinationProductLiterals(ordination: string | undefined): string {
+    const literals: Record<string, string> = {
+        alpha: 'title',
+        price: 'price',
+        stock: 'quantity'
+    }
+
+    return ordination ? literals[ordination] : literals['alpha']
 }

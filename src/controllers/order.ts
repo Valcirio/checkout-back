@@ -12,7 +12,7 @@ import { TAdminToken } from '@/validators/admin';
 import { FastifyReply, FastifyRequest } from "fastify";
 import { STATUS_CODE } from "@/types/httpStatus";
 import Stripe from 'stripe';
-import { OrdinationLiterals } from '@/functions/ordinationLiterals';
+import { OrdinationOrderLiterals } from '@/functions/ordinationLiterals';
 
 export async function CreateOrder
 (
@@ -52,7 +52,8 @@ export async function CreateOrder
         metadata: {
             productId: req.body.productId,
             quantity: req.body.quantity
-        }
+        },
+        receipt_email: req.body.email
     })
 
         if(!intent){
@@ -97,7 +98,7 @@ export async function CreateOrder
 
 export async function FindOrders
 (
-    req: FastifyRequest<{ Params: TParams, Querystring: TQueryParams }>,
+    req: FastifyRequest<{ Querystring: TQueryParams }>,
     reply: FastifyReply
 ) {
     const {page, ordination, desc} = req.query as TQueryParams
@@ -110,12 +111,10 @@ export async function FindOrders
         return reply.status(STATUS_CODE.BadRequest).send({message:'Página não encontrada.'})
     }
 
-    console.log(page, ordination, desc)
-
     const resultDB = await prisma.order.findMany({
         take: 5,
         skip: page? (Number(page) - 1)*5 : 0,
-        orderBy: OrdinationLiterals(ordination, desc),
+        orderBy: OrdinationOrderLiterals(ordination, desc),
         where: {
             product: {
                 adminId: user.id
@@ -165,6 +164,23 @@ export async function FindOrderById
         omit: {
             id: true,
             stripeIntentId: true,
+            clientId: true
+        },
+        include: {
+            product: {
+                select: {
+                    title: true,
+                    price: true,
+                    picture: true,
+                }
+            },
+            client: {
+                select: {
+                    name: true,
+                    email: true,
+                    method: true,
+                }
+            }
         }
     })
 

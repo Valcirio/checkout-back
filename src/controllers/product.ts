@@ -20,20 +20,35 @@ import { deleteImageOnS3, uploadImageToS3 } from "@/services/s3Bucket";
 // Types
 import { FastifyReply, FastifyRequest } from "fastify";
 import { STATUS_CODE } from "@/types/httpStatus";
+import { TQueryParams } from '@/validators/queries';
+import { OrdinationProductLiterals } from '@/functions/ordinationLiterals';
 
 export async function FindProducts
 (
-    req: FastifyRequest,
+    req: FastifyRequest<{ Params: TParams, Querystring: TQueryParams }>,
     reply: FastifyReply
 ) {
+    const {page, ordination, desc} = req.query as TQueryParams
     const user = req.user as TAdminToken
+
+    const totalPages = Math.ceil(await prisma.order.count() / 5)
+
+    if(page && totalPages !== 0 && Number(page) > totalPages){
+        req.log.error('Parâmetro de página é maior que o total de páginas.')
+        return reply.status(STATUS_CODE.BadRequest).send({message:'Página não encontrada.'})
+    }
     const result = await prisma.product.findMany({
+        take: 5,
+        skip: page? (Number(page) - 1)*5 : 0,
+            orderBy: {
+                [OrdinationProductLiterals(ordination)]: desc === 'true' ? 'desc' : 'asc'
+            },
         where: {
             adminId: user.id
         }
     })
     return reply.status(STATUS_CODE.OK)
-    .send({ message: result.length ? 'Produtos encontrados!' : 'Ainda não há produtos cadastrados.', data: result })
+    .send({ message: result.length ? 'Produtos encontrados!' : 'Ainda não há produtos cadastrados.', products: result })
 
 }
 
@@ -42,7 +57,6 @@ export async function FindAllProducts
     req: FastifyRequest,
     reply: FastifyReply
 ) {
-    const user = req.user as TAdminToken
     const result = await prisma.product.findMany()
     return reply.status(STATUS_CODE.OK)
     .send({ message: result.length ? 'Produtos encontrados!' : 'Ainda não há produtos cadastrados.', products: result })
@@ -55,8 +69,8 @@ export async function FindProductById
 ) {
     const result = await prisma.product.findUnique({
         where: {
-            id: req.params.id
-        }
+            id: req.params.id,
+            }
     })
 
     if(!result) {
@@ -71,6 +85,7 @@ export async function FindAdminProductById
     req: FastifyRequest<{ Params: TParams }>,
     reply: FastifyReply
 ) {
+
     const user = req.user as TAdminToken
     const result = await prisma.product.findUnique({
         where: {
@@ -133,24 +148,25 @@ export async function UpdateProduct
     req: FastifyRequest<{ Body: TUpdateProduct }>,
     reply: FastifyReply
 ) {
-
+    const { id, ...rest } = req.body
     try {
-
-        if(req.body.picture){
+        if(rest.picture){
             const pictureLink = await prisma.product.findUnique({
                 where: {
-                    id: req.body.id
+                    id: id
                 },
                 select: {
                     picture: true
                 }
             })
-            const image = convertBase64ToBuffer(req.body.picture)
 
+                
+            const image = convertBase64ToBuffer(rest.picture)
+                
             if(!image){
                 return reply.status(STATUS_CODE.BadRequest).send({message: 'Imagem não suportada.'})
             }
-
+            
             if(pictureLink?.picture){
                 await uploadImageToS3({
                     bucketName: 'checkout-prod-img',
@@ -161,19 +177,13 @@ export async function UpdateProduct
             } else {
                 return reply.status(STATUS_CODE.BadRequest).send({message: 'Ocorreu um erro ao tentar atualizar a imagem.'})
             }
-            
         }
 
         await prisma.product.update({
             where: {
-                id: req.body.id
+                id: id
             },
-            data: {
-                title: req.body.title,
-                description: req.body.description,
-                price: req.body.price,
-                quantity: req.body.quantity
-            }
+            data: rest
         })
 
         return reply.status(STATUS_CODE.OK).send({message:'Produto atualizado com sucesso!'})

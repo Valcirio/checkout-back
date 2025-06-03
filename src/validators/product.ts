@@ -18,7 +18,12 @@ export const ZRegisterProduct = z.object({
 export type TRegisterProduct = z.infer<typeof ZRegisterProduct>
 
 export const ZUpdateProduct = z.object({
-  id: z.string().nonempty()
-}).merge(ZRegisterProduct)
+  id: z.string().nonempty('O produto precisa de um id de identificação.'),
+  title: z.string().nonempty('O produto precisa de um nome.').optional(),
+  description: z.string().nonempty('O produto precisa de uma descrição.').optional(),
+  price: z.number().min(0, 'Preço inválido.').optional(),
+  picture: z.string().optional(),
+  quantity: z.number().min(0, 'Quantidade inválida.').optional()
+})
 
 export type TUpdateProduct = z.infer<typeof ZUpdateProduct>

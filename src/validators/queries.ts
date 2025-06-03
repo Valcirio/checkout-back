@@ -7,7 +7,6 @@ enum EQueryTypes {
 }
 
 export const ZQueryParams = z.record(z.nativeEnum(EQueryTypes), z.string().superRefine((val, ctx) => {
-  console.log(val, ctx.path[0])
   switch(ctx.path[0]) {
     case EQueryTypes.page:
       if (isNaN(Number(val))) {

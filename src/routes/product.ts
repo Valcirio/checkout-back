@@ -43,7 +43,7 @@ export default async function productRoutes(app: FastifyInstance) {
         },
     }, FindAllProducts)
 
-    app.get('admin/:id', {
+    app.get('/admin/:id', {
         schema: {
             params: ZParams
         },
@@ -201,7 +201,6 @@ app.delete('/:id',
                     },
                 })
             }
-            console.log(error)
             return reply.status(error.statusCode ? error.statusCode : 500)
             .send({message: GenericMessages(error.statusCode as STATUS_CODE) })
         },

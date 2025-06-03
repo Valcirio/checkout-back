@@ -21,10 +21,8 @@ export async function CreateAdmin
     })
 
     if(result){
-        // throw new Error('Usuário com este e-mail já existe.', { cause: STATUS_CODE.BadRequest })
         return reply.status(STATUS_CODE.BadRequest).send({message: 'Usuário com este e-mail já existe.'})
     }
-
     const resultDB = await prisma.admin.create({
         data: {
             ...req.body,
