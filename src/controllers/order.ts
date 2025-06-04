@@ -20,74 +20,77 @@ export async function CreateOrder
     reply: FastifyReply
 ) {
     try {
+        const resultDbProduct = await prisma.product.findFirst({
+            where: {
+                id: req.body.productId
+            },
+            omit: {
+                id: true,
+                createdAt: true,
+                updatedAt: true,
+                description: true,
+            }
+        })
 
-    const resultDbProduct = await prisma.product.findFirst({
-        where: {
-            id: req.body.productId
-        },
-        omit: {
-            id: true,
-            adminId: true,
-            createdAt: true,
-            updatedAt: true
+        
+        if(!resultDbProduct){
+            throw Error('Erro ao buscar o produto.')
         }
-    })
 
-    
-    if(!resultDbProduct){
-        throw Error('Erro ao buscar o produto.')
-    }
+        if(resultDbProduct.quantity < req.body.quantity){
+            req.log.error('Quantidade insuficiente no estoque.')
+            return reply.status(STATUS_CODE.BadRequest).send({message:'Quantidade insuficiente no estoque.'})
+        }
 
-    if(resultDbProduct.quantity < req.body.quantity){
-        req.log.error('Quantidade insuficiente no estoque.')
-        return reply.status(STATUS_CODE.BadRequest).send({message:'Quantidade insuficiente no estoque.'})
-    }
+        const intent: Stripe.Response<Stripe.PaymentIntent> = await stripe.paymentIntents.create({
+            amount: Math.round((Number(resultDbProduct.price) * 100) * req.body.quantity),
+            currency: 'brl',
+            automatic_payment_methods: {
+                enabled: true
+            },
+            metadata: {
+                productId: req.body.productId,
+                quantity: req.body.quantity
+            },
+            receipt_email: req.body.email
+        })
 
-    const intent: Stripe.Response<Stripe.PaymentIntent> = await stripe.paymentIntents.create({
-        amount: Math.round((Number(resultDbProduct.price) * 100) * req.body.quantity),
-        currency: 'brl',
-        automatic_payment_methods: {
-            enabled: true
-        },
-        metadata: {
-            productId: req.body.productId,
-            quantity: req.body.quantity
-        },
-        receipt_email: req.body.email
-    })
+            if(!intent){
+            throw new Error('Intent error.')
+        }
 
-        if(!intent){
-        throw new Error('Intent error.')
-    }
-
-    await prisma.client.create({
-        data: {
-            name: req.body.name,
-            email: req.body.email,
-            cpf: req.body.cpf,
-            address: req.body.address,
-            Order: {
-                create: {
-                    value: Number(resultDbProduct.price) * req.body.quantity,
-                    status: intent.status,
-                    stripeIntentId: intent.id,
-                    productId: req.body.productId
+        await prisma.client.create({
+            data: {
+                name: req.body.name,
+                email: req.body.email,
+                cpf: req.body.cpf,
+                address: req.body.address,
+                Order: {
+                    create: {
+                        value: Number(resultDbProduct.price) * req.body.quantity,
+                        status: intent.status,
+                        stripeIntentId: intent.id,
+                        productId: req.body.productId,
+                        adminId: resultDbProduct.adminId,
+                        title: resultDbProduct.title,
+                        price: Number(resultDbProduct.price),
+                        picture: resultDbProduct.picture
+                    }
                 }
             }
-        }
-    })
+        })
 
-    await prisma.product.update({
-        where: {
-            id: req.body.productId
-        },
-        data: {
-            quantity: { decrement: req.body.quantity }
-        }
-    })
+        await prisma.product.update({
+            where: {
+                id: req.body.productId
+            },
+            data: {
+                quantity: { decrement: req.body.quantity }
+            }
+        })
 
-    return reply.status(STATUS_CODE.Created)
-    .send({message:'Pedido criado com sucesso!', secret: intent.client_secret })
+        return reply.status(STATUS_CODE.Created)
+        .send({message:'Pedido criado com sucesso!', secret: intent.client_secret })
 
     } catch(err) {
         req.log.error(err)
@@ -116,16 +119,9 @@ export async function FindOrders
         skip: page? (Number(page) - 1)*5 : 0,
         orderBy: OrdinationOrderLiterals(ordination, desc),
         where: {
-            product: {
-                adminId: user.id
-            }
+            adminId: user.id
         },
         include: {
-            product: {
-                select: {
-                    title: true,
-                }
-            },
             client: {
                 select: {
                     name: true,
@@ -135,7 +131,9 @@ export async function FindOrders
         omit: {
             clientId: true,
             productId: true,
-            stripeIntentId: true
+            stripeIntentId: true,
+            price: true,
+            picture: true
         }
     })
 
@@ -167,13 +165,6 @@ export async function FindOrderById
             clientId: true
         },
         include: {
-            product: {
-                select: {
-                    title: true,
-                    price: true,
-                    picture: true,
-                }
-            },
             client: {
                 select: {
                     name: true,

@@ -9,7 +9,8 @@ const ACCEPTED_MIME_TYPES = [
 
 export const ZRegisterProduct = z.object({
   title: z.string().nonempty('O produto precisa de um nome.'),
-  description: z.string().nonempty('O produto precisa de uma descrição.'),
+  description: z.string().max(500, 'A descrição não pode ter mais de 1000 caracteres.')
+  .nonempty('O produto precisa de uma descrição.'),
   price: z.number().min(0, 'Preço inválido.'),
   picture: z.string(),
   quantity: z.number().min(0, 'Quantidade inválida.')
@@ -20,7 +21,8 @@ export type TRegisterProduct = z.infer<typeof ZRegisterProduct>
 export const ZUpdateProduct = z.object({
   id: z.string().nonempty('O produto precisa de um id de identificação.'),
   title: z.string().nonempty('O produto precisa de um nome.').optional(),
-  description: z.string().nonempty('O produto precisa de uma descrição.').optional(),
+  description: z.string().max(500, 'A descrição não pode ter mais de 1000 caracteres.')
+  .nonempty('O produto precisa de uma descrição.').optional(),
   price: z.number().min(0, 'Preço inválido.').optional(),
   picture: z.string().optional(),
   quantity: z.number().min(0, 'Quantidade inválida.').optional()

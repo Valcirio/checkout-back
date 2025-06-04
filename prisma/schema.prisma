@@ -23,6 +23,7 @@ model Admin {
   password String
 
   Product Product[]
+  Order   Order[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -63,12 +64,17 @@ model Order {
   stripeIntentId String  @unique
   status         String
   value          Decimal @db.Decimal(10, 2)
+  title          String
+  price          Decimal @db.Decimal(10, 2)
+  picture        String
 
   client   Client @relation(fields: [clientId], references: [id])
   clientId String @unique
 
-  product   Product @relation(fields: [productId], references: [id])
-  productId String
+  product   Product? @relation(fields: [productId], references: [id], onDelete: SetNull)
+  productId String?
 
   createdAt DateTime @default(now())
+  Admin     Admin?   @relation(fields: [adminId], references: [id])
+  adminId   String?
 }

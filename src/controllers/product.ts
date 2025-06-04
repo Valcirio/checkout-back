@@ -189,6 +189,7 @@ export async function UpdateProduct
         return reply.status(STATUS_CODE.OK).send({message:'Produto atualizado com sucesso!'})
 
     } catch (error) {
+        reply.log.error(PrismaError(error))
         return reply.status(STATUS_CODE.BadRequest).send({message: error instanceof Error ? error.message : 'Erro ao tentar atualizar produto.'})
     }
 }
@@ -199,6 +200,7 @@ export async function DeleteProduct
     reply: FastifyReply
 ) {
     try {
+
         const result = await prisma.product.delete({
             where: {
                 id: req.params.id
@@ -207,7 +209,7 @@ export async function DeleteProduct
                 picture: true
             }
         })
-
+        
         if(result.picture){
             await deleteImageOnS3({
                 bucketName: 'checkout-prod-img',
