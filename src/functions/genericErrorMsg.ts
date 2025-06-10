@@ -1,4 +1,4 @@
-import { PrismaClientInitializationError, PrismaClientKnownRequestError } from "@/generated/dbClient/runtime/library";
+import { PrismaClientInitializationError, PrismaClientKnownRequestError } from "@/generated/prisma-client/runtime/library";
 import { STATUS_CODE } from "@/types/httpStatus";
 
 export const GenericMessages = (status: STATUS_CODE | undefined) => {
