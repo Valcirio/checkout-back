@@ -31,6 +31,7 @@ export default async function productRoutes(app: FastifyInstance) {
             }
         },
         errorHandler(error, req, reply) {
+            console.log(error)
             return reply.status(error.statusCode ? error.statusCode : 500)
             .send({message: GenericMessages(error.statusCode as STATUS_CODE) })
         },
@@ -38,6 +39,8 @@ export default async function productRoutes(app: FastifyInstance) {
 
     app.get('', {
         errorHandler(error, req, reply) {
+            console.log(error)
+
             return reply.status(error.statusCode ? error.statusCode : 500)
             .send({message: GenericMessages(error.statusCode as STATUS_CODE) })
         },

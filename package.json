@@ -5,6 +5,10 @@
   "main": "index.js",
   "scripts": {
     "dev": "tsx --watch ./src/server.ts",
+    "build": "prisma generate && prisma migrate deploy && tsup src/server.ts --format esm --dts --outDir dist",
+    "start": "node dist/server.js",
+    "postinstall": "prisma generate",
+    "vercel-build": "prisma generate && prisma migrate deploy",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -13,7 +17,8 @@
   "packageManager": "pnpm@10.7.1",
   "devDependencies": {
     "@types/node": "^22.15.21",
-    "prisma": "^6.8.2",
+    "prisma": "^6.9.0",
+    "tsup": "^8.5.0",
     "tsx": "^4.19.4",
     "typescript": "^5.8.3"
   },
@@ -23,7 +28,8 @@
     "@fastify/jwt": "^9.1.0",
     "@fastify/multipart": "^9.0.3",
     "@ngrok/ngrok": "^1.5.1",
-    "@prisma/client": "^6.8.2",
+    "@prisma/client": "^6.9.0",
+    "@prisma/extension-accelerate": "^2.0.1",
     "bcryptjs": "^3.0.2",
     "cpf-cnpj-validator": "^1.0.3",
     "dotenv": "^16.5.0",
