@@ -6,7 +6,6 @@
   "scripts": {
     "dev": "tsx --watch ./src/server.ts",
     "build": "prisma generate --no-engine && prisma migrate deploy && tsup src/server.ts --dts --outDir public",
-    "start": "node api/server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
