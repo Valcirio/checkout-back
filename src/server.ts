@@ -60,6 +60,3 @@ class CheckoutApp {
 
 const app = new CheckoutApp()
 app.initialize()
-
-ngrok.connect({ addr: 3333, authtoken: process.env.NGROK_AUTHTOKEN, domain: 'poorly-cool-buck.ngrok-free.app' })
-.then(listener => app.server.log.info(`NGROK DOMAIN: ${listener.url()}`));
