@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "dev": "tsx --watch ./src/server.ts",
-    "build": "prisma generate --no-engine && prisma migrate deploy && tsup src/server.ts --dts --outDir dist",
-    "start": "node dist/server.js",
+    "build": "prisma generate --no-engine && prisma migrate deploy && tsup src/server.ts --dts --outDir api",
+    "start": "node api/server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
